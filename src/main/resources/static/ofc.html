@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>OFC 예선 시뮬레이터</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f5fb;
+      color: #111827;
+    }
+    h1, h2, h3 { margin: 0.2rem 0; }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      background: #2563eb;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    button.secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    /* 상단 헤더 공통 */
+    .top-header {
+      margin-bottom: 12px;
+    }
+    .top-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 2px 0;
+    }
+    .top-subtitle {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .top-tabs {
+      margin-top: 8px;
+      display: flex;
+      gap: 6px;
+    }
+
+    /* 라운드 탭 */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .tabs button {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      background: #e5e7eb;
+      color: #111827;
+    }
+    .tabs button.active {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    /* 시드(포트) */
+    .pots {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .pot {
+      border-radius: 12px;
+      background: #f9fafb;
+      padding: 8px;
+    }
+    .pot-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    .pot-teams {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .flag-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid #e5e7eb;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+    }
+    .flag-circle img {
+      width: 115%;
+      height: 115%;
+      object-fit: cover;
+    }
+
+    .flag-small {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #e5e7eb;
+      margin-right: 4px;
+    }
+    .flag-small img {
+      width: 120%;
+      height: 120%;
+      object-fit: cover;
+    }
+
+    .seed-buttons {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    /* 2차 예선 레이아웃 (유럽/아시아 스타일) */
+    .groups-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.4fr);
+      gap: 12px;
+    }
+    @media (max-width: 1024px) {
+      .groups-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .group-header-flags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .team-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 11px;
+      width: 60px;
+      text-align: center;
+    }
+    .team-chip span {
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .fixtures {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 500px;
+      overflow: auto;
+    }
+    .week-block {
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      padding: 8px;
+      background: #f9fafb;
+    }
+    .week-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .matches-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .match-card {
+      flex: 1 1 180px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 260px;
+    }
+    .match-label {
+      font-size: 11px;
+      color: #6b7280;
+    }
+    .match-teams {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+    }
+    .score-inputs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .score-inputs input {
+      width: 32px;
+      padding: 2px 3px;
+      border-radius: 4px;
+      border: 1px solid #d1d5db;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    th, td {
+      padding: 4px 6px;
+      text-align: center;
+      border-bottom: 1px solid #e5e7eb;
+      white-space: nowrap;
+    }
+    th {
+      font-weight: 600;
+      background: #f9fafb;
+    }
+    td.team-col, th.team-col {
+      text-align: left;
+    }
+
+    .row-qualify {
+      background: #ecfdf3;
+    }
+    .row-elim {
+      background: #f9fafb;
+      color: #6b7280;
+    }
+
+    .legend {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    /* 1차 예선 토너먼트 전용 */
+    .bracket-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 1024px) {
+      .bracket-layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+    .bracket-round-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .winner-box {
+      font-size: 12px;
+      border-radius: 10px;
+      background: #ecfdf3;
+      border: 1px solid #bbf7d0;
+      padding: 8px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- 상단 헤더 -->
+    <div class="top-header">
+      <h1 class="top-title">OFC 예선 시뮬레이터</h1>
+      <div class="top-subtitle">
+        1차(8강 토너먼트) → 2차(4팀 홈 &amp; 어웨이 풀리그). 상위 2팀 월드컵 본선 진출(총 2장).
+      </div>
+      <div class="top-tabs">
+        <button class="secondary">오세아니아 예선</button>
+      </div>
+    </div>
+
+    <!-- 라운드 탭 -->
+    <div class="tabs">
+      <button id="tabR1" class="active">1차 예선</button>
+      <button id="tabR2">2차 예선</button>
+    </div>
+
+    <!-- 1차 예선 뷰 -->
+    <div id="viewR1">
+      <!-- 시드 카드 -->
+      <div class="card">
+        <div class="section-header" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <h2>1차 예선 시드</h2>
+          <div style="font-size:11px;color:#6b7280;">
+            OFC 랭킹 기반 8개 시드 (4~11위, 각 1팀). 1~3위는 2차 예선 자동 진출.
+          </div>
+        </div>
+        <div class="pots" id="potAreaR1"></div>
+        <div class="seed-buttons">
+          <button id="drawFirstRoundBtn">1차 토너먼트(8강) 생성</button>
+          <button id="resetFirstRoundBtn" class="secondary">1차 예선 초기화</button>
+        </div>
+      </div>
+
+	  <!-- 1차 예선 토너먼트 / 자동 진출 팀 -->
+	  <div class="card">
+	    <div class="section-header" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+	      <h2>1차 예선 토너먼트 / 2차 자동 진출 팀</h2>
+	      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+	        <button id="goToR2Btn" class="secondary" disabled>2차 예선 준비 및 이동</button>
+	      </div>
+	    </div>
+
+	    <div class="bracket-layout">
+	      <!-- 왼쪽: 토너먼트 -->
+	      <div>
+	        <div class="bracket-round">
+	          <div class="bracket-round-title">8강</div>
+	          <div class="matches-row" id="firstRoundQuarterArea"></div>
+	        </div>
+	        <div class="bracket-round" style="margin-top:8px;">
+	          <div class="bracket-round-title">준결승</div>
+	          <div class="matches-row" id="firstRoundSemiArea"></div>
+	        </div>
+	        <div class="bracket-round" style="margin-top:8px;">
+	          <div class="bracket-round-title">결승</div>
+	          <div class="matches-row" id="firstRoundFinalArea"></div>
+	        </div>
+	        <div class="winner-box" id="firstRoundWinnerBox">
+	          1차 예선 우승팀: 아직 결정되지 않음
+	        </div>
+	      </div>
+
+	      <!-- 오른쪽: 2차 자동 진출 팀 리스트 -->
+	      <div>
+	        <h3 style="font-size:14px;margin-bottom:4px;">2차 예선 자동 진출 팀 (랭킹 1~3위)</h3>
+	        <div id="autoAdvanceList"></div>
+	        <div class="legend" style="margin-top:6px;">
+	          1~3위: 2차 예선 자동 진출<br/>
+	          1차 예선 우승팀 1명 합류 → 총 4팀으로 2차 예선 진행
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	 </div> 
+
+    <!-- 2차 예선 뷰 -->
+    <div id="viewR2" style="display:none;">
+      <!-- 2차 예선 시드(팀 목록) -->
+      <div class="card">
+        <div class="section-header" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <h2>2차 예선 팀 &amp; 시드</h2>
+          <div style="font-size:11px;color:#6b7280;">
+            1~3위 + 1차 예선 우승팀(4팀)을 랭킹 순으로 1~4시드 배정.
+          </div>
+        </div>
+        <div class="pots" id="secondRoundSeedArea"></div>
+        <div class="legend">
+          1시드가 가장 높은 OFC 랭킹. 시드는 경기 일정 생성에만 사용됩니다.
+        </div>
+      </div>
+
+      <!-- 2차 예선 경기 / 순위 -->
+      <div class="card">
+        <div class="section-header" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <h2>2차 예선 경기 / 순위</h2>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button id="resetSecondRoundBtn" class="secondary">2차 예선 점수 초기화</button>
+			<button id="saveOfcQualifiersBtn">OFC 본선 2팀 저장</button>
+          </div>
+        </div>
+        <div style="font-size:11px;color:#6b7280;margin-bottom:6px;">
+          4팀 홈 &amp; 어웨이 풀리그(총 6라운드). 상위 2팀이 월드컵 본선 진출.
+        </div>
+
+        <div class="groups-layout">
+          <div>
+            <div id="secondRoundHeader"></div>
+            <div class="fixtures" id="secondRoundFixtures"></div>
+          </div>
+          <div>
+            <h3 id="secondRoundStandingsTitle">2차 예선 순위</h3>
+            <div id="secondRoundStandingsWrap"></div>
+            <div class="legend">
+              상위 2팀: 월드컵 본선 진출
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== OFC 팀 데이터 =====
+    const OFC_TEAMS = [
+		  { id: "NZL", name: "뉴질랜드", 		flag: '/flags/오세아니아/nz.svg',		rank: 1 },
+	      { id: "SOL", name: "솔로몬 제도", 	flag: '/flags/오세아니아/sb.svg',		rank: 2 },
+	      { id: "NCL", name: "누벨칼레도니", 	flag: '/flags/오세아니아/nc.svg',		rank: 3 },
+	      { id: "FIJ", name: "피지", 			flag: '/flags/오세아니아/fj.svg',		rank: 4 },
+	      { id: "TAH", name: "타히티", 		flag: '/flags/오세아니아/pf.svg',		rank: 5 },
+	      { id: "VAN", name: "바누아투", 		flag: '/flags/오세아니아/vu.svg',		rank: 6 },
+	      { id: "PNG", name: "파푸아뉴기니", 	flag: '/flags/오세아니아/pg.svg',		rank: 7 },
+	      { id: "ASA", name: "아메리칸 사모아", 	flag: '/flags/오세아니아/as.svg',		rank: 8 },
+	      { id: "COK", name: "쿡 제도", 		flag: '/flags/오세아니아/ck.svg',		rank: 9 },
+	      { id: "SAM", name: "사모아", 		flag: '/flags/오세아니아/ws.svg',		rank: 10 },
+	      { id: "TGA", name: "통가", 			flag: '/flags/오세아니아/to.svg',		rank: 11 }
+    ];
+	
+	// ★ 월드컵 본선 슬롯(wc_slots)에 팀 1명을 추가하는 공통 함수
+	function addQualifiedTeamToWorldcup(team) {
+	  const raw = localStorage.getItem("wc_slots");
+	  let list = [];
+	  if (raw) {
+	    try { list = JSON.parse(raw); } catch (e) { list = []; }
+	  }
+	  list.push(team);
+	  localStorage.setItem("wc_slots", JSON.stringify(list));
+	}
+
+    // 규칙: 1~3위 자동 2차 예선, 4~11위 1차 예선 8강 토너먼트
+    const OFC_RULES = {
+      autoAdvanceRanks: [1, 2, 3],
+      secondRoundQualifyTop: 2
+    };
+
+    // ===== 상태 =====
+	const ofcState = {
+	  firstRound: {
+	    pots: [],        // [ [team], ... ] 8개 시드 (각 1팀)
+	    // 8강 4경기 + 준결승 2경기 + 결승 1경기
+	    matches: [
+	      { id: "QF1", homeId: null, awayId: null, homeScore: null, awayScore: null, pkWinnerId: null },
+	      { id: "QF2", homeId: null, awayId: null, homeScore: null, awayScore: null, pkWinnerId: null },
+	      { id: "QF3", homeId: null, awayId: null, homeScore: null, awayScore: null, pkWinnerId: null },
+	      { id: "QF4", homeId: null, awayId: null, homeScore: null, awayScore: null, pkWinnerId: null },
+	      { id: "SF1", homeId: null, awayId: null, homeScore: null, awayScore: null, pkWinnerId: null },
+	      { id: "SF2", homeId: null, awayId: null, homeScore: null, awayScore: null, pkWinnerId: null },
+	      { id: "F",   homeId: null, awayId: null, homeScore: null, awayScore: null, pkWinnerId: null }
+	    ],
+	    winnerId: null
+	  },
+	  secondRound: {
+	    teams: [],        // 4팀 ID
+	    fixtures: [],     // { week, homeId, awayId, homeScore, awayScore }
+	    standings: []     // 계산된 순위
+	  }
+	};
+
+    // ===== 유틸 =====
+    function shuffle(arr) {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function getTeam(id) {
+      return OFC_TEAMS.find(t => t.id === id);
+    }
+
+    function flagSrc(team) {
+      // 기존 ofc.html 에 맞춰 static/flags/ID.png 사용
+      return team.flag;
+    }
+
+    // 4팀 홈&어웨이 풀리그 일정 생성
+    function generateDoubleRoundRobin(teamIds) {
+      const n = teamIds.length;
+      if (n < 2) return [];
+      let teams = [...teamIds];
+      let bye = null;
+
+      if (n % 2 === 1) {
+        bye = "BYE";
+        teams.push(bye);
+      }
+
+      const total = teams.length;
+      const rounds = total - 1;
+      const fixtures = [];
+      const firstLegPairs = [];
+
+      for (let r = 0; r < rounds; r++) {
+        for (let i = 0; i < total / 2; i++) {
+          const a = teams[i];
+          const b = teams[total - 1 - i];
+          if (a === "BYE" || b === "BYE") continue;
+
+          const homeFirst = Math.random() < 0.5 ? a : b;
+          const awayFirst = homeFirst === a ? b : a;
+
+          fixtures.push({
+            week: r + 1,
+            homeId: homeFirst,
+            awayId: awayFirst,
+            homeScore: null,
+            awayScore: null
+          });
+
+          firstLegPairs.push({
+            round: r + 1,
+            homeId: homeFirst,
+            awayId: awayFirst
+          });
+        }
+
+        const fixed = teams[0];
+        const rest = teams.slice(1);
+        rest.unshift(rest.pop());
+        teams = [fixed, ...rest];
+      }
+
+      firstLegPairs.forEach(p => {
+        fixtures.push({
+          week: rounds + p.round,
+          homeId: p.awayId,
+          awayId: p.homeId,
+          homeScore: null,
+          awayScore: null
+        });
+      });
+
+      return fixtures.sort((a, b) => a.week - b.week);
+    }
+
+    // ===== 1차 예선: 시드 구성 (8개 시드) =====
+	function buildFirstRoundPots() {
+	  const firstRoundTeams = OFC_TEAMS
+	    .filter(t => !OFC_RULES.autoAdvanceRanks.includes(t.rank))
+	    .sort((a, b) => a.rank - b.rank); // 4~11위 (8팀)
+
+	  // 8개 시드: 각 1팀
+	  const pots = firstRoundTeams.map(t => [t]);
+	  ofcState.firstRound.pots = pots;
+	}
+
+	function renderFirstRoundPots() {
+	  const potArea = document.getElementById("potAreaR1");
+	  potArea.innerHTML = "";
+
+	  ofcState.firstRound.pots.forEach((pot, idx) => {
+	    const div = document.createElement("div");
+	    div.className = "pot";
+	    div.innerHTML = `<div class="pot-title">${idx + 1}시드</div>`;
+	    const inner = document.createElement("div");
+	    inner.className = "pot-teams";
+	    pot.forEach(team => {
+	      const el = document.createElement("div");
+	      el.className = "flag-circle";
+	      el.title = `${team.rank}위 ${team.name}`;
+	      el.innerHTML = `<img src="${flagSrc(team)}" alt="${team.name}" />`;
+	      inner.appendChild(el);
+	    });
+	    div.appendChild(inner);
+	    potArea.appendChild(div);
+	  });
+	}
+
+    // ===== 1차 예선: 자동 진출 팀 리스트 =====
+    function renderAutoAdvanceList() {
+      const area = document.getElementById("autoAdvanceList");
+      const autoTeams = OFC_TEAMS
+        .filter(t => OFC_RULES.autoAdvanceRanks.includes(t.rank))
+        .sort((a, b) => a.rank - b.rank);
+
+      area.innerHTML = "";
+      autoTeams.forEach(t => {
+        const row = document.createElement("div");
+        row.style.display = "flex";
+        row.style.alignItems = "center";
+        row.style.fontSize = "12px";
+        row.style.marginBottom = "4px";
+        row.innerHTML = `
+          <span class="flag-small">
+            <img src="${flagSrc(t)}" alt="${t.name}" />
+          </span>
+          <span style="margin-right:4px;">${t.name}</span>
+          <span style="color:#6b7280;font-size:11px;">(랭킹 ${t.rank}위)</span>
+        `;
+        area.appendChild(row);
+      });
+    }
+
+    // ===== 1차 예선: 8강 토너먼트 매칭 =====
+	function drawFirstRoundBracket() {
+	  // 4~11위 8팀
+	  const firstRoundTeams = OFC_TEAMS
+	    .filter(t => !OFC_RULES.autoAdvanceRanks.includes(t.rank))
+	    .sort((a, b) => a.rank - b.rank); // 시드 1~8
+
+	  const topSeeds = firstRoundTeams.slice(0, 4);              // 1~4시드
+	  const bottomSeeds = shuffle(firstRoundTeams.slice(4));     // 5~8시드 랜덤
+
+	  const pairs = [
+	    [topSeeds[0], bottomSeeds[0]],
+	    [topSeeds[1], bottomSeeds[1]],
+	    [topSeeds[2], bottomSeeds[2]],
+	    [topSeeds[3], bottomSeeds[3]]
+	  ];
+
+	  const matches = ofcState.firstRound.matches;
+
+	  // 8강 4경기 세팅
+	  pairs.forEach((pair, i) => {
+	    const home = pair[0];
+	    const away = pair[1];
+	    matches[i].homeId = home.id;
+	    matches[i].awayId = away.id;
+	    matches[i].homeScore = null;
+	    matches[i].awayScore = null;
+	    matches[i].pkWinnerId = null;
+	  });
+
+	  // 준결승 / 결승 초기화
+	  for (let i = 4; i < matches.length; i++) {
+	    matches[i].homeId = null;
+	    matches[i].awayId = null;
+	    matches[i].homeScore = null;
+	    matches[i].awayScore = null;
+	    matches[i].pkWinnerId = null;
+	  }
+
+	  ofcState.firstRound.winnerId = null;
+	  document.getElementById("goToR2Btn").disabled = true;
+
+	  renderFirstRoundBracket();
+	}
+
+	function renderFirstRoundBracket() {
+	  const quarterArea = document.getElementById("firstRoundQuarterArea");
+	  const semiArea = document.getElementById("firstRoundSemiArea");
+	  const finalArea = document.getElementById("firstRoundFinalArea");
+	  const winnerBox = document.getElementById("firstRoundWinnerBox");
+
+	  quarterArea.innerHTML = "";
+	  semiArea.innerHTML = "";
+	  finalArea.innerHTML = "";
+
+	  const matches = ofcState.firstRound.matches;
+	  const q1 = matches[0];
+	  const q2 = matches[1];
+	  const q3 = matches[2];
+	  const q4 = matches[3];
+	  const sf1 = matches[4];
+	  const sf2 = matches[5];
+	  const fin = matches[6];
+
+	  function matchCardHtml(matchIndex, label, match) {
+	    if (!match.homeId || !match.awayId) {
+	      return `
+	        <div class="match-card">
+	          <div class="match-label">${label}</div>
+	          <div style="font-size:12px;color:#9ca3af;">대진이 아직 생성되지 않았습니다.</div>
+	        </div>
+	      `;
+	    }
+	    const home = getTeam(match.homeId);
+	    const away = getTeam(match.awayId);
+	    const pkInfo = match.pkWinnerId
+	      ? `<div class="match-label" style="margin-top:2px;">PK 승: ${getTeam(match.pkWinnerId).name}</div>`
+	      : "";
+	    return `
+	      <div class="match-card">
+	        <div class="match-label">${label}</div>
+	        <div class="match-teams">
+	          <div class="flag-circle" style="width:28px;height:28px;">
+	            <img src="${flagSrc(home)}" alt="${home.name}">
+	          </div>
+	          <span>${home.name}</span>
+	          <span style="margin:0 4px;">vs</span>
+	          <span>${away.name}</span>
+	          <div class="flag-circle" style="width:28px;height:28px;">
+	            <img src="${flagSrc(away)}" alt="${away.name}">
+	          </div>
+	        </div>
+	        <div class="score-inputs">
+	          <input type="number" min="0" data-round="1" data-idx="${matchIndex}" data-side="home"
+	                 value="${match.homeScore ?? ""}">
+	          <span>:</span>
+	          <input type="number" min="0" data-round="1" data-idx="${matchIndex}" data-side="away"
+	                 value="${match.awayScore ?? ""}">
+	        </div>
+	        ${pkInfo}
+	      </div>
+	    `;
+	  }
+
+	  // 8강
+	  quarterArea.innerHTML =
+	    matchCardHtml(0, "8강 1경기", q1) +
+	    matchCardHtml(1, "8강 2경기", q2) +
+	    matchCardHtml(2, "8강 3경기", q3) +
+	    matchCardHtml(3, "8강 4경기", q4);
+
+	  // 준결승
+	  let semiHtml = "";
+	  if (!sf1.homeId || !sf1.awayId || !sf2.homeId || !sf2.awayId) {
+	    semiHtml = `
+	      <div class="match-card">
+	        <div class="match-label">준결승</div>
+	        <div style="font-size:12px;color:#9ca3af;">8강 승자가 결정되면 준결승 대진이 생성됩니다.</div>
+	      </div>
+	    `;
+	  } else {
+	    semiHtml =
+	      matchCardHtml(4, "준결승 1경기", sf1) +
+	      matchCardHtml(5, "준결승 2경기", sf2);
+	  }
+	  semiArea.innerHTML = semiHtml;
+
+	  // 결승
+	  let finalHtml;
+	  if (!fin.homeId || !fin.awayId) {
+	    finalHtml = `
+	      <div class="match-card">
+	        <div class="match-label">결승</div>
+	        <div style="font-size:12px;color:#9ca3af;">준결승 승자가 결정되면 결승 대진이 생성됩니다.</div>
+	      </div>
+	    `;
+	  } else {
+	    finalHtml = matchCardHtml(6, "결승", fin);
+	  }
+	  finalArea.innerHTML = finalHtml;
+
+	  // 우승팀
+	  if (ofcState.firstRound.winnerId) {
+	    const t = getTeam(ofcState.firstRound.winnerId);
+	    winnerBox.innerHTML = `
+	      1차 예선 우승팀:
+	      <span class="flag-small">
+	        <img src="${flagSrc(t)}" alt="${t.name}">
+	      </span>
+	      <strong>${t.name}</strong>
+	    `;
+	  } else {
+	    winnerBox.textContent = "1차 예선 우승팀: 아직 결정되지 않음";
+	  }
+
+	  // 점수 입력 이벤트
+	  document
+	    .querySelectorAll(
+	      '#firstRoundQuarterArea input[type="number"], ' +
+	      '#firstRoundSemiArea input[type="number"], ' +
+	      '#firstRoundFinalArea input[type="number"]'
+	    )
+	    .forEach(inp => {
+	      inp.addEventListener("change", onScoreChange);
+	    });
+	}
+
+    // ===== 점수 변경 핸들러 (1차/2차 공용) =====
+    function onScoreChange(e) {
+      const input = e.target;
+      const round = Number(input.dataset.round);
+      const idx = Number(input.dataset.idx);
+      const side = input.dataset.side;
+      const value = input.value === "" ? null : Math.max(0, parseInt(input.value, 10));
+
+      if (round === 1) {
+        const match = ofcState.firstRound.matches[idx];
+        if (!match) return;
+        match[side + "Score"] = value;
+        recomputeFirstRound();
+        renderFirstRoundBracket();
+      } else if (round === 2) {
+        const fixtures = ofcState.secondRound.fixtures;
+        const match = fixtures[idx];
+        if (!match) return;
+        match[side + "Score"] = value;
+        updateSecondRoundStandings();
+      }
+    }
+
+    // ===== 1차 예선: 승자 계산 및 라운드 연결 =====
+	function recomputeFirstRound() {
+	  const matches = ofcState.firstRound.matches;
+	  const q1 = matches[0];
+	  const q2 = matches[1];
+	  const q3 = matches[2];
+	  const q4 = matches[3];
+	  const sf1 = matches[4];
+	  const sf2 = matches[5];
+	  const fin = matches[6];
+
+	  function winnerOf(m) {
+	    if (m.homeScore == null || m.awayScore == null) {
+	      // 점수 비어 있으면 PK 정보도 리셋
+	      m.pkWinnerId = null;
+	      return null;
+	    }
+	    if (m.homeScore > m.awayScore) {
+	      // 정규시간 승부 나면 PK 무시
+	      m.pkWinnerId = null;
+	      return m.homeId;
+	    }
+	    if (m.homeScore < m.awayScore) {
+	      m.pkWinnerId = null;
+	      return m.awayId;
+	    }
+
+	    // 여기부터 무승부(동점)일 때
+
+	    // 이미 PK 승자가 정해져 있으면 그 사람 유지
+	    if (m.pkWinnerId === m.homeId || m.pkWinnerId === m.awayId) {
+	      return m.pkWinnerId;
+	    }
+
+	    // 처음 무승부가 된 경우에만 한 번 랜덤으로 PK 승자 선택
+	    const winner = Math.random() < 0.5 ? m.homeId : m.awayId;
+	    m.pkWinnerId = winner;
+	    return winner;
+	  }
+
+	  const wq1 = winnerOf(q1);
+	  const wq2 = winnerOf(q2);
+	  const wq3 = winnerOf(q3);
+	  const wq4 = winnerOf(q4);
+
+	  // 준결승 1: QF1 vs QF2
+	  if (wq1 && wq2) {
+	    sf1.homeId = wq1;
+	    sf1.awayId = wq2;
+	  } else {
+	    sf1.homeId = null;
+	    sf1.awayId = null;
+	    sf1.homeScore = null;
+	    sf1.awayScore = null;
+	    sf1.pkWinnerId = null;
+	  }
+
+	  // 준결승 2: QF3 vs QF4
+	  if (wq3 && wq4) {
+	    sf2.homeId = wq3;
+	    sf2.awayId = wq4;
+	  } else {
+	    sf2.homeId = null;
+	    sf2.awayId = null;
+	    sf2.homeScore = null;
+	    sf2.awayScore = null;
+	    sf2.pkWinnerId = null;
+	  }
+
+	  const ws1 = winnerOf(sf1);
+	  const ws2 = winnerOf(sf2);
+
+	  // 결승
+	  if (ws1 && ws2) {
+	    fin.homeId = ws1;
+	    fin.awayId = ws2;
+	  } else {
+	    fin.homeId = null;
+	    fin.awayId = null;
+	    fin.homeScore = null;
+	    fin.awayScore = null;
+	    fin.pkWinnerId = null;
+	    ofcState.firstRound.winnerId = null;
+	    document.getElementById("goToR2Btn").disabled = true;
+	    return;
+	  }
+
+	  const fw = winnerOf(fin);
+	  if (fw) {
+	    ofcState.firstRound.winnerId = fw;
+	    document.getElementById("goToR2Btn").disabled = false;
+	  } else {
+	    ofcState.firstRound.winnerId = null;
+	    document.getElementById("goToR2Btn").disabled = true;
+	  }
+	}
+
+    // ===== 2차 예선: 팀 구성 + 시드 카드 =====
+    function prepareSecondRound() {
+      if (!ofcState.firstRound.winnerId) return;
+
+      const autoTeams = OFC_TEAMS
+        .filter(t => OFC_RULES.autoAdvanceRanks.includes(t.rank));
+
+      const winnerTeam = getTeam(ofcState.firstRound.winnerId);
+      const allTeams = [...autoTeams, winnerTeam].sort((a, b) => a.rank - b.rank);
+
+      ofcState.secondRound.teams = allTeams.map(t => t.id);
+      ofcState.secondRound.fixtures = generateDoubleRoundRobin(ofcState.secondRound.teams);
+      ofcState.secondRound.standings = [];
+
+      renderSecondRoundSeeds();
+      renderSecondRoundHeader();
+      renderSecondRoundFixtures();
+      updateSecondRoundStandings();
+    }
+
+    function renderSecondRoundSeeds() {
+      const area = document.getElementById("secondRoundSeedArea");
+      area.innerHTML = "";
+
+      const teams = ofcState.secondRound.teams
+        .map(id => getTeam(id))
+        .sort((a, b) => a.rank - b.rank);
+
+      const pots = [
+        [teams[0]],
+        [teams[1]],
+        [teams[2]],
+        [teams[3]]
+      ];
+      const labels = ["1시드", "2시드", "3시드", "4시드"];
+
+      pots.forEach((pot, idx) => {
+        const div = document.createElement("div");
+        div.className = "pot";
+        div.innerHTML = `<div class="pot-title">${labels[idx]}</div>`;
+        const inner = document.createElement("div");
+        inner.className = "pot-teams";
+        pot.forEach(team => {
+          const el = document.createElement("div");
+          el.className = "flag-circle";
+          el.title = `${team.rank}위 ${team.name}`;
+          el.innerHTML = `<img src="${flagSrc(team)}" alt="${team.name}" />`;
+          inner.appendChild(el);
+        });
+        div.appendChild(inner);
+        area.appendChild(div);
+      });
+    }
+
+    // ===== 2차 예선: 헤더 / 경기 / 순위 =====
+    function renderSecondRoundHeader() {
+      const header = document.getElementById("secondRoundHeader");
+      header.innerHTML = "";
+
+      const teams = ofcState.secondRound.teams.map(id => getTeam(id));
+
+      const wrap = document.createElement("div");
+      wrap.className = "group-header-flags";
+
+      const title = document.createElement("h3");
+      title.textContent = `2차 예선 (${teams.length}팀)`;
+      wrap.appendChild(title);
+
+      teams.sort((a, b) => a.rank - b.rank).forEach(t => {
+        const chip = document.createElement("div");
+        chip.className = "team-chip";
+        chip.innerHTML = `
+          <div class="flag-circle"><img src="${flagSrc(t)}" alt="${t.name}"></div>
+          <span>${t.name}</span>
+        `;
+        wrap.appendChild(chip);
+      });
+
+      header.appendChild(wrap);
+    }
+
+    function renderSecondRoundFixtures() {
+      const area = document.getElementById("secondRoundFixtures");
+      area.innerHTML = "";
+
+      const fixtures = ofcState.secondRound.fixtures;
+      if (!fixtures || !fixtures.length) {
+        area.innerHTML = '<div style="font-size:12px;color:#6b7280;">2차 예선 준비 후 경기표가 생성됩니다.</div>';
+        return;
+      }
+
+      const byWeek = {};
+      fixtures.forEach((m, idx) => {
+        if (!byWeek[m.week]) byWeek[m.week] = [];
+        byWeek[m.week].push({ ...m, index: idx });
+      });
+
+      const weeks = Object.keys(byWeek).map(Number).sort((a, b) => a - b);
+
+      weeks.forEach(w => {
+        const block = document.createElement("div");
+        block.className = "week-block";
+        block.innerHTML = `<div class="week-title">${w} Week</div>`;
+        const row = document.createElement("div");
+        row.className = "matches-row";
+
+        byWeek[w].forEach(m => {
+          const card = document.createElement("div");
+          card.className = "match-card";
+
+          const home = getTeam(m.homeId);
+          const away = getTeam(m.awayId);
+
+          card.innerHTML = `
+            <div class="match-label">HOME / AWAY</div>
+            <div class="match-teams">
+              <div class="flag-circle" style="width:28px;height:28px;">
+                <img src="${flagSrc(home)}" alt="${home.name}">
+              </div>
+              <span style="font-size:12px;">${home.name}</span>
+              <span style="margin:0 2px;">vs</span>
+              <span style="font-size:12px;">${away.name}</span>
+              <div class="flag-circle" style="width:28px;height:28px;">
+                <img src="${flagSrc(away)}" alt="${away.name}">
+              </div>
+            </div>
+            <div class="score-inputs">
+              <input type="number" min="0" data-round="2" data-idx="${m.index}" data-side="home" value="${m.homeScore ?? ""}">
+              <span>:</span>
+              <input type="number" min="0" data-round="2" data-idx="${m.index}" data-side="away" value="${m.awayScore ?? ""}">
+            </div>
+          `;
+          row.appendChild(card);
+        });
+
+        block.appendChild(row);
+        area.appendChild(block);
+      });
+
+      area.querySelectorAll('input[type="number"]').forEach(inp => {
+        inp.addEventListener("change", onScoreChange);
+      });
+    }
+
+    function updateSecondRoundStandings() {
+      const teams = ofcState.secondRound.teams;
+      const fixtures = ofcState.secondRound.fixtures;
+
+      if (!teams.length) {
+        document.getElementById("secondRoundStandingsWrap").innerHTML =
+          '<div style="font-size:12px;color:#6b7280;">2차 예선 준비 후 순위가 표시됩니다.</div>';
+        return;
+      }
+
+      const stats = {};
+      teams.forEach(id => {
+        const t = getTeam(id);
+        stats[id] = {
+          id,
+          name: t.name,
+          flag: flagSrc(t),
+          played: 0,
+          win: 0,
+          draw: 0,
+          loss: 0,
+          gf: 0,
+          ga: 0,
+          gd: 0,
+          pts: 0
+        };
+      });
+
+      fixtures.forEach(m => {
+        if (m.homeScore == null || m.awayScore == null) return;
+        const hs = m.homeScore;
+        const as = m.awayScore;
+        const home = stats[m.homeId];
+        const away = stats[m.awayId];
+        home.played++;
+        away.played++;
+
+        home.gf += hs;
+        home.ga += as;
+        away.gf += as;
+        away.ga += hs;
+        home.gd = home.gf - home.ga;
+        away.gd = away.gf - away.ga;
+
+        if (hs > as) {
+          home.win++;
+          home.pts += 3;
+          away.loss++;
+        } else if (hs < as) {
+          away.win++;
+          away.pts += 3;
+          home.loss++;
+        } else {
+          home.draw++;
+          away.draw++;
+          home.pts++;
+          away.pts++;
+        }
+      });
+
+      const rows = Object.values(stats);
+      rows.sort((a, b) => {
+        if (b.pts !== a.pts) return b.pts - a.pts;
+        if (b.gd !== a.gd) return b.gd - a.gd;
+        if (b.gf !== a.gf) return b.gf - a.gf;
+        return a.name.localeCompare(b.name, "ko");
+      });
+
+      ofcState.secondRound.standings = rows;
+      renderSecondRoundStandings();
+	  }
+	  
+	  // ★ 2차 예선 최종 순위 상위 2팀을 wc_slots에 저장
+	  function saveOfcQualifiersToWorldcupSlots() {
+	    const standings = ofcState.secondRound.standings;
+	    if (!standings || !standings.length) {
+	      alert("2차 예선 순위가 없습니다. 경기 결과를 먼저 입력하세요.");
+	      return;
+	    }
+
+	    // hostTeam이 OFC일 수도 있으니 코드 겹치면 건너뛴다
+	    let hostCode = null;
+	    const hostRaw = localStorage.getItem("hostTeam");
+	    if (hostRaw) {
+	      try {
+	        const hostObj = JSON.parse(hostRaw);
+	        hostCode = (hostObj.code || "").toUpperCase();
+	      } catch (e) {
+	        console.warn("hostTeam 파싱 실패", e);
+	      }
+	    }
+
+	    const topN = OFC_RULES.secondRoundQualifyTop || 2;
+	    const qualifiers = standings.slice(0, topN);
+
+	    qualifiers.forEach(row => {
+	      const code = (row.id || row.code || "").toUpperCase();
+	      if (!code) return;
+
+	      // 개최국과 같으면 스킵
+	      if (hostCode && code === hostCode) return;
+
+	      addQualifiedTeamToWorldcup({
+	        code: code,
+	        name: row.name,
+	        confed: "OFC",
+	        flagUrl: row.flag,
+	        isHost: false
+	      });
+	    });
+
+	    alert("OFC 2차 예선 상위 " + topN + "팀을 wc_slots에 저장했습니다.");
+	  }
+
+    function renderSecondRoundStandings() {
+      const wrap = document.getElementById("secondRoundStandingsWrap");
+      const rows = ofcState.secondRound.standings;
+
+      if (!rows || !rows.length) {
+        wrap.innerHTML =
+          '<div style="font-size:12px;color:#6b7280;">경기 결과 입력 후 순위가 표시됩니다.</div>';
+        return;
+      }
+
+      let html = '<table><thead><tr>' +
+        '<th style="width:32px;">순위</th>' +
+        '<th class="team-col">팀</th>' +
+        '<th>경기</th><th>승점</th><th>승</th><th>무</th><th>패</th>' +
+        '<th>득점</th><th>실점</th><th>득실</th>' +
+        '</tr></thead><tbody>';
+
+      rows.forEach((t, idx) => {
+        const cls = idx < OFC_RULES.secondRoundQualifyTop ? "row-qualify" : "row-elim";
+        html += `
+          <tr class="${cls}">
+            <td>${idx + 1}</td>
+            <td class="team-col">
+              <span class="flag-small"><img src="${t.flag}" alt="${t.name}"></span>${t.name}
+            </td>
+            <td>${t.played}</td>
+            <td>${t.pts}</td>
+            <td>${t.win}</td>
+            <td>${t.draw}</td>
+            <td>${t.loss}</td>
+            <td>${t.gf}</td>
+            <td>${t.ga}</td>
+            <td>${t.gd}</td>
+          </tr>
+        `;
+      });
+
+      html += "</tbody></table>";
+      wrap.innerHTML = html;
+    }
+
+    // ===== 탭 / 버튼 초기화 =====
+    function initTabs() {
+      const tabR1 = document.getElementById("tabR1");
+      const tabR2 = document.getElementById("tabR2");
+      const viewR1 = document.getElementById("viewR1");
+      const viewR2 = document.getElementById("viewR2");
+
+      tabR1.addEventListener("click", () => {
+        tabR1.classList.add("active");
+        tabR2.classList.remove("active");
+        viewR1.style.display = "";
+        viewR2.style.display = "none";
+      });
+
+      tabR2.addEventListener("click", () => {
+        tabR2.classList.add("active");
+        tabR1.classList.remove("active");
+        viewR1.style.display = "none";
+        viewR2.style.display = "";
+      });
+    }
+
+	function initButtons() {
+	  document.getElementById("drawFirstRoundBtn").addEventListener("click", () => {
+	    drawFirstRoundBracket();
+	  });
+
+	  document.getElementById("resetFirstRoundBtn").addEventListener("click", () => {
+	    ofcState.firstRound.matches.forEach(m => {
+	      m.homeScore = null;
+	      m.awayScore = null;
+	      m.pkWinnerId = null;
+	    });
+	    ofcState.firstRound.winnerId = null;
+	    document.getElementById("goToR2Btn").disabled = true;
+	    buildFirstRoundPots();
+	    renderFirstRoundPots();
+	    drawFirstRoundBracket();
+	  });
+
+	  document.getElementById("goToR2Btn").addEventListener("click", () => {
+	    if (!ofcState.firstRound.winnerId) return;
+	    prepareSecondRound();
+	    document.getElementById("tabR2").click();
+	  });
+
+	  document.getElementById("resetSecondRoundBtn").addEventListener("click", () => {
+	    ofcState.secondRound.fixtures.forEach(m => {
+	      m.homeScore = null;
+	      m.awayScore = null;
+	    });
+	    updateSecondRoundStandings();
+	    renderSecondRoundFixtures();
+	  });
+
+	  // ★ OFC 본선 2팀을 wc_slots에 저장
+	  document
+	    .getElementById("saveOfcQualifiersBtn")
+	    .addEventListener("click", saveOfcQualifiersToWorldcupSlots);
+	}
+
+    // ===== 초기화 =====
+    function init() {
+      initTabs();
+      initButtons();
+      buildFirstRoundPots();
+      renderFirstRoundPots();
+      renderAutoAdvanceList();
+      drawFirstRoundBracket();
+      updateSecondRoundStandings();
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>

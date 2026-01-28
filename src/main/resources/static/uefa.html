@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>유럽 예선 시뮬레이터</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:#f3f5fb;
+      color:#111827;
+    }
+    h1,h2,h3 { margin: 0.2rem 0; }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .card {
+      background:white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(15,23,42,0.08);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+
+    .section-header {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:8px;
+    }
+    .section-header h2 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      background:#2563eb;
+      color:white;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+    }
+    button.secondary {
+      background:#e5e7eb;
+      color:#111827;
+    }
+    button:disabled {
+      opacity:0.5;
+      cursor:default;
+    }
+
+    /* 시드(포트) 영역 */
+    .pots {
+      display:grid;
+      grid-template-columns: repeat(6, minmax(0,1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .pot {
+      border-radius: 12px;
+      background:#f9fafb;
+      padding: 8px;
+    }
+    .pot-title {
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:4px;
+      text-align:center;
+    }
+    .pot-teams {
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      justify-content:center;
+    }
+
+    .flag-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border:2px solid #e5e7eb;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#fff;
+    }
+    .flag-circle img {
+      width:115%;
+      height:115%;
+      object-fit:cover;
+    }
+
+    .flag-small {
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      overflow:hidden;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid #e5e7eb;
+      margin-right:4px;
+    }
+    .flag-small img {
+      width:120%;
+      height:120%;
+      object-fit:cover;
+    }
+
+    .seed-buttons {
+      margin-top:8px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      font-size:12px;
+    }
+
+    /* 조/경기/순위 레이아웃 */
+    .groups-layout {
+      display:grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0,1.4fr);
+      gap:12px;
+    }
+    @media (max-width: 1024px) {
+      .groups-layout {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    .group-select {
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:8px;
+    }
+    .group-select button {
+      font-size:12px;
+      padding:4px 10px;
+    }
+
+    .group-header-flags {
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:8px;
+    }
+    .team-chip {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      font-size:11px;
+      width:60px;
+      text-align:center;
+    }
+    .team-chip span {
+      margin-top:2px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:100%;
+    }
+
+    .fixtures {
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      max-height:500px;
+      overflow:auto;
+    }
+    .week-block {
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:8px;
+      background:#f9fafb;
+    }
+    .week-title {
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:4px;
+    }
+    .matches-row {
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .match-card {
+      flex:1 1 180px;
+      border-radius:8px;
+      border:1px solid #e5e7eb;
+      background:white;
+      padding:6px 8px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:4px;
+      min-width:260px;
+    }
+    .match-label {
+      font-size:11px;
+      color:#6b7280;
+    }
+    .match-teams {
+      display:flex;
+      align-items:center;
+      gap:4px;
+      font-size:12px;
+    }
+    .score-inputs {
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    .score-inputs input {
+      width:32px;
+      padding:2px 3px;
+      border-radius:4px;
+      border:1px solid #d1d5db;
+      text-align:center;
+      font-size:12px;
+    }
+    .no-match-card {
+      flex:1 1 140px;
+      border-radius:8px;
+      border:1px dashed #e5e7eb;
+      background:white;
+      padding:10px;
+      text-align:center;
+      font-size:11px;
+      color:#9ca3af;
+    }
+
+    table {
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+    }
+    th, td {
+      padding:4px 6px;
+      text-align:center;
+      border-bottom:1px solid #e5e7eb;
+      white-space:nowrap;
+    }
+    th {
+      font-weight:600;
+      background:#f9fafb;
+    }
+    td.team-col, th.team-col {
+      text-align:left;
+    }
+
+    .row-qualify {
+      background:#ecfdf3;
+    }
+    .row-wildcard {
+      background:#eff6ff;
+    }
+    .row-elim {
+      background:#f9fafb;
+      color:#6b7280;
+    }
+
+    .legend {
+      font-size:11px;
+      color:#6b7280;
+      margin-top:4px;
+    }
+    .legend span {
+      margin-right:8px;
+    }
+    .legend-mark {
+      display:inline-block;
+      width:10px;
+      height:10px;
+      border-radius:2px;
+      margin-right:4px;
+      vertical-align:middle;
+    }
+    .lg-green { background:#bbf7d0; }
+    .lg-blue { background:#bfdbfe; }
+    .lg-gray { background:#e5e7eb; }
+
+    .top-header {
+      margin-bottom: 12px;
+    }
+    .top-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 2px 0;
+    }
+    .top-subtitle {
+      font-size: 12px;
+      color:#6b7280;
+    }
+    .top-tabs {
+      margin-top: 8px;
+      display:flex;
+      gap:6px;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+	
+  <!-- 상단 헤더 -->
+  <div class="top-header">
+    <h1 class="top-title">UEFA 예선 시뮬레이터</h1>
+    <div class="top-subtitle" id="topSubtitle"></div>
+    <div class="top-tabs">
+      <button>유럽 예선</button>
+    </div>
+  </div>
+
+  <!-- 시드(포트) -->
+  <div class="card">
+    <div class="section-header">
+      <h2>예선 시드</h2>
+      <div style="font-size:11px;color:#6b7280;">
+        UEFA 랭킹 기준 1~10위 1시드, … 51~55위 6시드
+      </div>
+    </div>
+    <div class="pots" id="potArea"></div>
+    <div class="seed-buttons">
+      <button class="secondary" data-pot="1" id="potBtn1">1시드 배정</button>
+      <button class="secondary" data-pot="2" id="potBtn2">2시드 배정</button>
+      <button class="secondary" data-pot="3" id="potBtn3">3시드 배정</button>
+      <button class="secondary" data-pot="4" id="potBtn4">4시드 배정</button>
+      <button class="secondary" data-pot="5" id="potBtn5">5시드 배정</button>
+      <button class="secondary" data-pot="6" id="potBtn6">6시드 배정</button>
+    </div>
+  </div>
+
+  <!-- 조편성 / 경기 / 순위 -->
+  <div class="card">
+    <div class="section-header">
+      <h2>조 편성 / 경기 / 순위</h2>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button id="drawAllBtn">전체 조 추첨</button>
+        <button id="resetBtn" class="secondary">초기화</button>
+        <button id="wildcardToggleBtn" class="secondary">와일드 카드 보기</button>
+		<button id="saveUefaQualifiersBtn">UEFA 본선 저장</button>
+      </div>
+    </div>
+
+    <div id="groupsLayout" class="groups-layout">
+      <!-- 왼쪽: 조 선택 + 경기표 -->
+      <div>
+        <div class="group-select" id="groupTabArea"></div>
+        <div id="groupHeader"></div>
+        <div class="fixtures" id="fixtureArea"></div>
+      </div>
+
+      <!-- 오른쪽: 조별 순위 -->
+      <div>
+        <h3 id="standingsTitle">A조 순위</h3>
+        <div id="standingsTableWrap"></div>
+        <div class="legend" id="groupLegend"></div>
+      </div>
+    </div>
+
+    <!-- 와일드 카드 전체 보기 -->
+    <div id="wildcardView" style="display:none;margin-top:8px;">
+      <h3>와일드 카드(조 3위) 순위</h3>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:4px;">
+        6팀 조는 최하위 팀과의 경기 제외 후 비교
+      </div>
+      <div id="wildcardTableWrap"></div>
+      <div class="legend" id="wildcardLegend" style="margin-top:6px;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- 팀 데이터 (FIFA 랭킹 순) ---------- */
+const TEAMS = [
+  { id: 'ESP', name: '스페인',        flag: '/flags/유럽/es.svg',     rank: 1 },
+  { id: 'FRA', name: '프랑스',        flag: '/flags/유럽/fr.svg',     rank: 2 },
+  { id: 'ENG', name: '잉글랜드',      	flag: '/flags/유럽/gb-eng.svg', rank: 3 },
+  { id: 'POR', name: '포르투갈',      	flag: '/flags/유럽/pt.svg',     rank: 4 },
+  { id: 'NED', name: '네덜란드',      	flag: '/flags/유럽/nl.svg',     rank: 5 },
+  { id: 'BEL', name: '벨기에',        flag: '/flags/유럽/be.svg',     rank: 6 },
+  { id: 'ITA', name: '이탈리아',      	flag: '/flags/유럽/it.svg',     rank: 7 },
+  { id: 'GER', name: '독일',        	flag: '/flags/유럽/de.svg',     rank: 8 },
+  { id: 'CRO', name: '크로아티아',    	flag: '/flags/유럽/hr.svg',     rank: 9 },
+  { id: 'SUI', name: '스위스',        flag: '/flags/유럽/ch.svg',     rank: 10 },
+
+  { id: 'DEN', name: '덴마크',        flag: '/flags/유럽/dk.svg',     rank: 11 },
+  { id: 'AUT', name: '오스트리아',    	flag: '/flags/유럽/at.svg',     rank: 12 },
+  { id: 'TUR', name: '튀르키예',      	flag: '/flags/유럽/tr.svg',     rank: 13 },
+  { id: 'UKR', name: '우크라이나',    	flag: '/flags/유럽/ua.svg',     rank: 14 },
+  { id: 'NOR', name: '노르웨이',      	flag: '/flags/유럽/no.svg',     rank: 15 },
+  { id: 'RUS', name: '러시아',        flag: '/flags/유럽/ru.svg',     rank: 16 },
+  { id: 'POL', name: '폴란드',        flag: '/flags/유럽/pl.svg',     rank: 17 },
+  { id: 'WAL', name: '웨일스',        flag: '/flags/유럽/gb-wls.svg', rank: 18 },
+  { id: 'SRB', name: '세르비아',      	flag: '/flags/유럽/rs.svg',     rank: 19 },
+  { id: 'HUN', name: '헝가리',        flag: '/flags/유럽/hu.svg',     rank: 20 },
+
+  { id: 'SCO', name: '스코틀랜드',    	flag: '/flags/유럽/gb-sct.svg', rank: 21 },
+  { id: 'SWE', name: '스웨덴',        flag: '/flags/유럽/se.svg',     rank: 22 },
+  { id: 'CZE', name: '체코',         	flag: '/flags/유럽/cz.svg',     rank: 23 },
+  { id: 'SVK', name: '슬로바키아',    	flag: '/flags/유럽/sk.svg',     rank: 24 },
+  { id: 'ROU', name: '루마니아',      	flag: '/flags/유럽/ro.svg',     rank: 25 },
+  { id: 'GRE', name: '그리스',        flag: '/flags/유럽/gr.svg',     rank: 26 },
+  { id: 'SVN', name: '슬로베니아',    	flag: '/flags/유럽/si.svg',     rank: 27 },
+  { id: 'ALB', name: '알바니아',      	flag: '/flags/유럽/al.svg',     rank: 28 },
+  { id: 'IRL', name: '아일랜드',      	flag: '/flags/유럽/ie.svg',     rank: 29 },
+  { id: 'MKD', name: '북마케도니아',  	flag: '/flags/유럽/mk.svg',     rank: 30 },
+
+  { id: 'NIR', name: '북아일랜드',    		flag: '/flags/유럽/gb-nir.svg', 	rank: 31 },
+  { id: 'GEO', name: '조지아',        	flag: '/flags/유럽/ge.svg',     	rank: 32 },
+  { id: 'FIN', name: '핀란드',        	flag: '/flags/유럽/fi.svg',     	rank: 33 },
+  { id: 'ISL', name: '아이슬란드',    		flag: '/flags/유럽/is.svg',     	rank: 34 },
+  { id: 'BIH', name: '보스니아 헤르체고비나', 	flag: '/flags/유럽/ba.svg', 	   	rank: 35 },
+  { id: 'ISR', name: '이스라엘',      		flag: '/flags/유럽/il.svg',    	rank: 36 },
+  { id: 'MNE', name: '몬테네그로',    		flag: '/flags/유럽/me.svg',     	rank: 37 },
+  { id: 'KVX', name: '코소보',        	flag: '/flags/유럽/xk.svg',     	rank: 38 },
+  { id: 'BUL', name: '불가리아',      		flag: '/flags/유럽/bg.svg',     	rank: 39 },
+  { id: 'LUX', name: '룩셈부르크',    		flag: '/flags/유럽/lu.svg',     	rank: 40 },
+
+  { id: 'BLR', name: '벨라루스',      	flag: '/flags/유럽/by.svg',     rank: 41 },
+  { id: 'ARM', name: '아르메니아',    	flag: '/flags/유럽/am.svg',     rank: 42 },
+  { id: 'KAZ', name: '카자흐스탄',    	flag: '/flags/유럽/kz.svg',     rank: 43 },
+  { id: 'AZE', name: '아제르바이잔',  	flag: '/flags/유럽/az.svg',     rank: 44 },
+  { id: 'CYP', name: '키프로스',      	flag: '/flags/유럽/cy.svg',     rank: 45 },
+  { id: 'FRO', name: '페로 제도',     	flag: '/flags/유럽/fo.svg',     rank: 46 },
+  { id: 'EST', name: '에스토니아',    	flag: '/flags/유럽/ee.svg',     rank: 47 },
+  { id: 'LVA', name: '라트비아',      	flag: '/flags/유럽/lv.svg',     rank: 48 },
+  { id: 'LTU', name: '리투아니아',    	flag: '/flags/유럽/lt.svg',     rank: 49 },
+  { id: 'MDA', name: '몰도바',        flag: '/flags/유럽/md.svg',     rank: 50 },
+
+  { id: 'MLT', name: '몰타',         	flag: '/flags/유럽/mt.svg',     rank: 51 },
+  { id: 'AND', name: '안도라',        flag: '/flags/유럽/ad.svg',     rank: 52 },
+  { id: 'GIB', name: '지브롤터',      	flag: '/flags/유럽/gi.svg',     rank: 53 },
+  { id: 'LIE', name: '리히텐슈타인',  	flag: '/flags/유럽/li.svg',     rank: 54 },
+  { id: 'SMR', name: '산마리노',      	flag: '/flags/유럽/sm.svg',     rank: 55 },
+];
+
+const NUM_GROUPS = 10; // A~J
+
+// ★ 월드컵 본선 슬롯(wc_slots)에 팀 1명을 추가하는 공통 함수
+function addQualifiedTeamToWorldcup(team) {
+  const raw = localStorage.getItem("wc_slots");
+  let list = [];
+  if (raw) {
+    try { list = JSON.parse(raw); } catch (e) { list = []; }
+  }
+  list.push(team);
+  localStorage.setItem("wc_slots", JSON.stringify(list));
+}
+
+// ✅ 유럽이 월드컵 개최 대륙인지, 개최국 팀 ID(ENG, GER 등)는 뭔지
+// 나중에 host 서버랑 연결할 땐 여기만 API 결과로 바꿔 끼우면 됨.
+// 개최국 정보 읽기
+let hostData = null;
+try {
+  hostData = JSON.parse(localStorage.getItem("hostTeam"));
+} catch(e) { hostData = null; }
+
+// 개최국이 있고 유럽(UEFA) 소속이면 예선 B 모드
+const HOST_TEAM_ID = hostData ? (hostData.code || hostData.id) : null;
+const IS_EUROPE_WORLD_CUP = hostData && hostData.confed === "UEFA";
+
+// 개최 여부에 따라 와일드카드 티켓 수 (A: 4팀, B: 3팀)
+const WILDCARD_SLOTS = IS_EUROPE_WORLD_CUP ? 3 : 4;
+
+// 실제 예선에 참여하는 팀 리스트 (개최국 빠진 상태일 수도 있음)
+let activeTeams = [];
+// 각 조 최대 팀 수 (유럽 개최 여부에 따라 달라짐)
+let groupMaxSizes = [];
+
+// 상태
+const groups = Array.from({length: NUM_GROUPS}, () => []);
+const fixturesByGroup = Array.from({length: NUM_GROUPS}, () => []);
+let currentGroupIndex = 0;
+let potsBase = [];
+let potAssigned = [false,false,false,false,false,false];
+
+/* ---------- 초기 세팅: 개최국 반영 + 그룹 용량 ---------- */
+function initTournamentState() {
+  // 개최국 빼고 activeTeams 구성
+  if (IS_EUROPE_WORLD_CUP && HOST_TEAM_ID) {
+    activeTeams = TEAMS.filter(t => t.id !== HOST_TEAM_ID);
+  } else {
+    activeTeams = TEAMS.slice();
+  }
+  // 랭킹 순 정렬
+  activeTeams.sort((a,b) => a.rank - b.rank);
+
+  const total = activeTeams.length; // 55 또는 54
+
+  if (total === 55) {
+    // 기본: 5개조 6팀 + 5개조 5팀 (유럽 예선 A)
+    groupMaxSizes = [6,6,6,6,6, 5,5,5,5,5];
+  } else if (total === 54) {
+    // 유럽 월드컵: 4개조 6팀 + 6개조 5팀 (유럽 예선 B)
+    groupMaxSizes = [6,6,6,6, 5,5,5,5,5,5];
+  } else {
+    // 혹시라도 팀 수 바뀌면, 최대한 균등 분배
+    const base = Math.floor(total / NUM_GROUPS);
+    const rem = total - base * NUM_GROUPS;
+    groupMaxSizes = Array(NUM_GROUPS).fill(base);
+    for (let i=0;i<rem;i++) groupMaxSizes[i]++;
+  }
+}
+
+/* ---------- 유틸 ---------- */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function getGroupLabel(i) {
+  return String.fromCharCode("A".charCodeAt(0) + i);
+}
+function findTeam(id) {
+  // activeTeams 우선, 혹시 누락되면 TEAMS에서라도 찾기
+  return activeTeams.find(t => t.id === id) || TEAMS.find(t => t.id === id);
+}
+
+/* ---------- 시드 ---------- */
+function buildPots() {
+  // activeTeams(개최국 제외 반영된 리스트) 기준
+  const sorted = [...activeTeams].sort((a,b) => a.rank - b.rank);
+  const pots = [];
+  // 앞 5개 포트는 항상 10팀씩
+  const fixed = [10,10,10,10,10];
+  let idx = 0;
+  fixed.forEach(size => {
+    pots.push(sorted.slice(idx, idx + size));
+    idx += size;
+  });
+  // 남은 팀 전부 6시드로
+  pots.push(sorted.slice(idx));
+  return pots;
+}
+
+function renderPots() {
+  const potArea = document.getElementById('potArea');
+  potArea.innerHTML = '';
+  potsBase.forEach((pot, idx) => {
+    const div = document.createElement('div');
+    div.className = 'pot';
+    div.innerHTML = `<div class="pot-title">${idx+1}시드</div>`;
+    const inner = document.createElement('div');
+    inner.className = 'pot-teams';
+    pot.forEach(t => {
+      const capsule = document.createElement('div');
+      capsule.className = 'flag-circle';
+      capsule.title = `${t.rank}위 ${t.name}`;
+      capsule.innerHTML = `<img src="${t.flag}" alt="${t.name}" />`;
+      inner.appendChild(capsule);
+    });
+    div.appendChild(inner);
+    potArea.appendChild(div);
+  });
+}
+
+/* ---------- 조 추첨 (전체) ---------- */
+function drawAllGroups() {
+  // 초기화
+  for (let i=0;i<NUM_GROUPS;i++) {
+    groups[i] = [];
+  }
+  potAssigned = [true,true,true,true,true,true];
+  for (let i=1;i<=6;i++) {
+    const btn = document.getElementById('potBtn'+i);
+    if (btn) btn.disabled = true;
+  }
+
+  const shuffledPots = potsBase.map(p => shuffle(p));
+
+  // ✅ 모든 포트를 "그룹 최대 인원"을 넘지 않도록 순환 배정
+  for (let p=0; p<shuffledPots.length; p++) {
+    let pot = shuffledPots[p].slice(); // 복사
+    let gi = 0;
+    while (pot.length) {
+      // 이 조가 아직 자리 남아 있으면 채움
+      if (groups[gi].length < groupMaxSizes[gi]) {
+        const team = pot.pop();
+        if (team) {
+          groups[gi].push(team.id);
+        }
+      }
+      gi = (gi + 1) % NUM_GROUPS;
+    }
+  }
+
+  // 경기표 생성
+  for (let g=0; g<NUM_GROUPS; g++) {
+    fixturesByGroup[g] = generateFixturesForGroup(groups[g]);
+  }
+}
+
+/* ---------- 시드별 배정 (버튼 클릭) ---------- */
+function assignPot(pIndex) {
+  if (potAssigned[pIndex]) return;
+
+  const used = new Set(groups.flat());
+  const basePot = potsBase[pIndex];
+  let avail = basePot.filter(t => !used.has(t.id));
+  if (!avail.length) return;
+
+  avail = shuffle(avail); // 포트 내에서 랜덤
+
+  // ✅ 어떤 포트를 먼저 눌러도, "조 최대인원" 채우는 방식으로 순환 배정
+  let gi = 0;
+  while (avail.length) {
+    if (groups[gi].length < groupMaxSizes[gi]) {
+      const team = avail.pop();
+      if (team) {
+        groups[gi].push(team.id);
+      }
+    }
+    gi = (gi + 1) % NUM_GROUPS;
+  }
+
+  potAssigned[pIndex] = true;
+  const btn = document.getElementById('potBtn'+(pIndex+1));
+  if (btn) btn.disabled = true;
+
+  // 경기표 재생성
+  for (let g=0; g<NUM_GROUPS; g++) {
+    fixturesByGroup[g] = generateFixturesForGroup(groups[g]);
+  }
+  renderGroupHeader(currentGroupIndex);
+  renderFixturesForGroup(currentGroupIndex);
+  updateStandingsAndWildcard();
+}
+
+/* ---------- 라운드 로빈 ---------- */
+// ✅ teamIds 순서는 이제 "시드 클릭 순서"와 상관없이,
+//    항상 랭킹 순으로 정렬해서 사용.
+function generateFixturesForGroup(teamIds) {
+  // 랭킹 기준 정렬
+  const orderedIds = [...teamIds].sort((a,b) => {
+    const ta = findTeam(a);
+    const tb = findTeam(b);
+    return ta.rank - tb.rank;
+  });
+
+  const n = orderedIds.length;
+  if (n < 2) return [];
+
+  let teams = [...orderedIds];
+
+  // 홀수 팀이면 BYE 추가
+  let bye = "BYE";
+  if (n % 2 === 1) {
+    teams.push(bye);
+  } else {
+    bye = null;
+  }
+
+  const total = teams.length;
+  const rounds = total - 1;
+  const fixtures = [];
+  const firstLegPairs = [];
+
+  // 1라운드: 매치업 + 홈/원정 랜덤
+  for (let r = 0; r < rounds; r++) {
+    for (let i = 0; i < total / 2; i++) {
+      const a = teams[i];
+      const b = teams[total - 1 - i];
+      if (a === "BYE" || b === "BYE") continue;
+
+      const aHomeFirst = Math.random() < 0.5;
+      const homeFirst = aHomeFirst ? a : b;
+      const awayFirst = aHomeFirst ? b : a;
+
+      fixtures.push({
+        week: r + 1,
+        homeId: homeFirst,
+        awayId: awayFirst,
+        homeScore: null,
+        awayScore: null
+      });
+
+      firstLegPairs.push({
+        round: r + 1,
+        homeId: homeFirst,
+        awayId: awayFirst
+      });
+    }
+
+    // 회전 (1번 시드는 고정된 효과)
+    const fixed = teams[0];
+    const rest = teams.slice(1);
+    rest.unshift(rest.pop());
+    teams = [fixed, ...rest];
+  }
+
+  // 2라운드: 홈/원정 뒤집어서 다시 한 번
+  firstLegPairs.forEach(p => {
+    fixtures.push({
+      week: rounds + p.round,
+      homeId: p.awayId,
+      awayId: p.homeId,
+      homeScore: null,
+      awayScore: null
+    });
+  });
+
+  return fixtures;
+}
+
+/* ---------- 그룹 UI ---------- */
+function renderGroupHeader(gIndex) {
+  const header = document.getElementById('groupHeader');
+  const label = getGroupLabel(gIndex);
+
+  // ✅ 그룹 내 팀들을 랭킹 순으로 정렬해서 표시 (시드 클릭 순서와 무관)
+  const teamIds = [...groups[gIndex]].sort((a,b) => {
+    const ta = findTeam(a);
+    const tb = findTeam(b);
+    return ta.rank - tb.rank;
+  });
+
+  const teams = teamIds.map(id => findTeam(id));
+  header.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.className = 'group-header-flags';
+  const title = document.createElement('h3');
+  title.textContent = `${label}조 (${teams.length}팀)`;
+  wrap.appendChild(title);
+
+  teams.forEach(t => {
+    const chip = document.createElement('div');
+    chip.className = 'team-chip';
+    chip.innerHTML = `
+      <div class="flag-circle"><img src="${t.flag}" alt="${t.name}"/></div>
+      <span>${t.name}</span>
+    `;
+    wrap.appendChild(chip);
+  });
+
+  header.appendChild(wrap);
+}
+
+function renderFixturesForGroup(gIndex) {
+  const fixtureArea = document.getElementById('fixtureArea');
+  fixtureArea.innerHTML = '';
+  const fixtures = fixturesByGroup[gIndex];
+  if (!fixtures.length) {
+    fixtureArea.innerHTML = '<div style="font-size:12px;color:#6b7280;">조 추첨 후 경기표가 생성됩니다.</div>';
+    return;
+  }
+
+  const byWeek = {};
+  fixtures.forEach((m, idx) => {
+    if (!byWeek[m.week]) byWeek[m.week] = [];
+    byWeek[m.week].push({ ...m, index: idx });
+  });
+
+  const teamIds = groups[gIndex];
+  const weeks = Object.keys(byWeek).map(Number).sort((a,b)=>a-b);
+
+  weeks.forEach(w => {
+    const block = document.createElement('div');
+    block.className = 'week-block';
+    block.innerHTML = `<div class="week-title">${w} Week</div>`;
+    const row = document.createElement('div');
+    row.className = 'matches-row';
+
+    const usedTeams = new Set();
+
+    byWeek[w].forEach(m => {
+      usedTeams.add(m.homeId);
+      usedTeams.add(m.awayId);
+
+      const card = document.createElement('div');
+      card.className = 'match-card';
+
+      const home = findTeam(m.homeId);
+      const away = findTeam(m.awayId);
+
+      card.innerHTML = `
+        <div class="match-label">HOME / AWAY</div>
+        <div class="match-teams">
+          <div class="flag-circle" style="width:28px;height:28px;">
+            <img src="${home.flag}" alt="${home.name}">
+          </div>
+          <span style="font-size:12px;">${home.name}</span>
+          <span style="margin:0 2px;">vs</span>
+          <span style="font-size:12px;">${away.name}</span>
+          <div class="flag-circle" style="width:28px;height:28px;">
+            <img src="${away.flag}" alt="${away.name}">
+          </div>
+        </div>
+        <div class="score-inputs">
+          <input type="number" min="0" data-g="${gIndex}" data-idx="${m.index}" data-side="home"
+                 value="${m.homeScore ?? ''}">
+          <span>:</span>
+          <input type="number" min="0" data-g="${gIndex}" data-idx="${m.index}" data-side="away"
+                 value="${m.awayScore ?? ''}">
+        </div>
+      `;
+      row.appendChild(card);
+    });
+
+    const allTeamsSet = new Set(teamIds);
+    usedTeams.forEach(t => allTeamsSet.delete(t));
+    if (allTeamsSet.size > 0) {
+      const byeCard = document.createElement('div');
+      byeCard.className = 'no-match-card';
+      const names = Array.from(allTeamsSet).map(id => findTeam(id).name).join(', ');
+      byeCard.innerHTML = `
+        <div style="font-weight:600;margin-bottom:2px;">NO MATCH</div>
+        <div>이번 주 쉬는 팀: ${names}</div>
+      `;
+      row.appendChild(byeCard);
+    }
+
+    block.appendChild(row);
+    fixtureArea.appendChild(block);
+  });
+
+  fixtureArea.querySelectorAll('input[type="number"]').forEach(inp => {
+    inp.addEventListener('change', onScoreChange);
+  });
+}
+
+/* ---------- 점수 변경 ---------- */
+function onScoreChange(e) {
+  const input = e.target;
+  const gIndex = Number(input.dataset.g);
+  const matchIdx = Number(input.dataset.idx);
+  const side = input.dataset.side;
+  const value = input.value === '' ? null : Math.max(0, parseInt(input.value, 10));
+  const match = fixturesByGroup[gIndex][matchIdx];
+  if (!match) return;
+  match[side + 'Score'] = value;
+  updateStandingsAndWildcard();
+}
+
+/* ---------- 순위 계산 (승자승 포함) ---------- */
+function calcStandingsForGroup(gIndex) {
+  const teamIds = groups[gIndex];
+  const matches = fixturesByGroup[gIndex];
+
+  const stats = {};
+  teamIds.forEach(id => {
+    const t = findTeam(id);
+    stats[id] = {
+      id,
+      name: t.name,
+      flag: t.flag,
+      played:0, win:0, draw:0, loss:0,
+      gf:0, ga:0, gd:0, pts:0
+    };
+  });
+
+  matches.forEach(m => {
+    if (m.homeScore == null || m.awayScore == null) return;
+    const hs = m.homeScore;
+    const as = m.awayScore;
+    const home = stats[m.homeId];
+    const away = stats[m.awayId];
+    home.played++; away.played++;
+    home.gf+=hs; home.ga+=as;
+    away.gf+=as; away.ga+=hs;
+    home.gd = home.gf - home.ga;
+    away.gd = away.gf - away.ga;
+    if (hs > as) {
+      home.win++; away.loss++;
+      home.pts+=3;
+    } else if (hs < as) {
+      away.win++; home.loss++;
+      away.pts+=3;
+    } else {
+      home.draw++; away.draw++;
+      home.pts++; away.pts++;
+    }
+  });
+
+  const baseSort = (a,b) => {
+    if (b.pts !== a.pts) return b.pts - a.pts;
+    if (b.gd !== a.gd) return b.gd - a.gd;
+    if (b.gf !== a.gf) return b.gf - a.gf;
+    return a.name.localeCompare(b.name,'ko');
+  };
+
+  const list = Object.values(stats);
+  const byPts = {};
+  list.forEach(t => {
+    if (!byPts[t.pts]) byPts[t.pts] = [];
+    byPts[t.pts].push(t);
+  });
+  const ptsValues = Object.keys(byPts).map(Number).sort((a,b)=>b-a);
+  const finalList = [];
+
+  ptsValues.forEach(pts => {
+    const group = byPts[pts];
+    if (group.length === 1) {
+      finalList.push(group[0]);
+      return;
+    }
+    const idsSet = new Set(group.map(t=>t.id));
+    const mini = {};
+    group.forEach(t => {
+      mini[t.id] = {
+        id:t.id, name:t.name, flag:t.flag,
+        played:0, win:0, draw:0, loss:0,
+        gf:0, ga:0, gd:0, pts:0,
+        total:t
+      };
+    });
+    matches.forEach(m => {
+      if (m.homeScore == null || m.awayScore == null) return;
+      if (!idsSet.has(m.homeId) || !idsSet.has(m.awayId)) return;
+      const hs = m.homeScore;
+      const as = m.awayScore;
+      const home = mini[m.homeId];
+      const away = mini[m.awayId];
+      home.played++; away.played++;
+      home.gf+=hs; home.ga+=as;
+      away.gf+=as; away.ga+=hs;
+      home.gd = home.gf - home.ga;
+      away.gd = away.gf - away.ga;
+      if (hs > as) { home.win++; home.pts+=3; away.loss++; }
+      else if (hs < as) { away.win++; away.pts+=3; home.loss++; }
+      else { home.draw++; away.draw++; home.pts++; away.pts++; }
+    });
+    let miniList = Object.values(mini);
+    miniList.sort((a,b)=>{
+      if (b.pts !== a.pts) return b.pts - a.pts;
+      if (b.gd !== a.gd) return b.gd - a.gd;
+      if (b.gf !== a.gf) return b.gf - a.gf;
+      return baseSort(a.total,b.total);
+    });
+    finalList.push(...miniList.map(m=>stats[m.id]));
+  });
+
+  return finalList;
+}
+
+/* ---------- 순위표 렌더 ---------- */
+function renderStandingsForGroup(gIndex, standings) {
+  const wrap = document.getElementById('standingsTableWrap');
+  const label = getGroupLabel(gIndex);
+  document.getElementById('standingsTitle').textContent = `${label}조 순위`;
+
+  if (!groups[gIndex].length) {
+    wrap.innerHTML = '<div style="font-size:12px;color:#6b7280;">조 추첨 후 순위가 표시됩니다.</div>';
+    return;
+  }
+
+  const rows = standings;
+  let html = '<table><thead><tr>' +
+      '<th style="width:32px;">순위</th>' +
+      '<th class="team-col">팀</th>' +
+      '<th>경기</th><th>승점</th><th>승</th><th>무</th><th>패</th>' +
+      '<th>득점</th><th>실점</th><th>득실</th>' +
+      '</tr></thead><tbody>';
+
+  rows.forEach((t, idx) => {
+    let rowClass = '';
+    if (idx <= 1) rowClass = 'row-qualify';
+    else if (idx === 2) rowClass = 'row-wildcard';
+    else rowClass = 'row-elim';
+
+    html += `<tr class="${rowClass}">
+      <td>${idx+1}</td>
+      <td class="team-col">
+        <span class="flag-small"><img src="${t.flag}" alt="${t.name}"></span>${t.name}
+      </td>
+      <td>${t.played}</td>
+      <td>${t.pts}</td>
+      <td>${t.win}</td>
+      <td>${t.draw}</td>
+      <td>${t.loss}</td>
+      <td>${t.gf}</td>
+      <td>${t.ga}</td>
+      <td>${t.gd}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+
+/* ---------- 와일드 카드 ---------- */
+function calcWildcardRows(allStandings) {
+  const rows = [];
+  for (let g=0; g<NUM_GROUPS; g++) {
+    const standings = allStandings[g];
+    if (!standings || standings.length < 3) continue;
+    const third = standings[2];
+    const teamIds = groups[g];
+    const matches = fixturesByGroup[g];
+
+    let ignoreOpponent = null;
+    if (teamIds.length === 6 && standings.length === 6) {
+      ignoreOpponent = standings[standings.length-1].id;
+    }
+
+    const stat = {
+      group: getGroupLabel(g),
+      id: third.id,
+      name: third.name,
+      flag: third.flag,
+      played:0, win:0, draw:0, loss:0,
+      gf:0, ga:0, gd:0, pts:0
+    };
+
+    matches.forEach(m => {
+      if (m.homeScore == null || m.awayScore == null) return;
+      if (m.homeId !== third.id && m.awayId !== third.id) return;
+      const oppId = m.homeId === third.id ? m.awayId : m.homeId;
+      if (ignoreOpponent && oppId === ignoreOpponent) return;
+
+      const isHome = m.homeId === third.id;
+      const gf = isHome ? m.homeScore : m.awayScore;
+      const ga = isHome ? m.awayScore : m.homeScore;
+
+      stat.played++;
+      stat.gf += gf;
+      stat.ga += ga;
+      stat.gd = stat.gf - stat.ga;
+      if (gf > ga)      { stat.win++;  stat.pts += 3; }
+      else if (gf < ga) { stat.loss++;               }
+      else              { stat.draw++; stat.pts += 1; }
+    });
+
+    rows.push(stat);
+  }
+
+  rows.sort((a,b)=>{
+    if (b.pts !== a.pts) return b.pts - a.pts;
+    if (b.gd !== a.gd) return b.gd - a.gd;
+    if (b.gf !== a.gf) return b.gf - a.gf;
+    return a.name.localeCompare(b.name,'ko');
+  });
+  return rows;
+}
+
+// ★ UEFA 최종 본선 진출팀을 wc_slots에 저장
+function saveUefaQualifiersToWorldcupSlots() {
+  // 1) 각 조 순위 계산
+  const allStandings = [];
+  for (let g = 0; g < NUM_GROUPS; g++) {
+    if (!groups[g].length) {
+      allStandings[g] = [];
+      continue;
+    }
+    allStandings[g] = calcStandingsForGroup(g);
+  }
+
+  // 2) 조 1~2위(본선 직행) 수집
+  const groupWinners = [];
+  for (let g = 0; g < NUM_GROUPS; g++) {
+    const st = allStandings[g];
+    if (!st || !st.length) continue;
+    if (st[0]) groupWinners.push(st[0]);
+    if (st[1]) groupWinners.push(st[1]);
+  }
+
+  if (!groupWinners.length) {
+    alert("조별 순위가 없습니다. 먼저 경기 결과를 입력하세요.");
+    return;
+  }
+
+  // 3) 조 3위 와일드 카드 순위 계산
+  const wildcardRows = calcWildcardRows(allStandings);
+  const selectedWildcards = wildcardRows.slice(0, WILDCARD_SLOTS); // A모드 4팀, B모드 3팀
+
+  // 4) 개최국 코드 (유럽 개최일 수도 있으니 겹치면 스킵)
+  let hostCode = null;
+  try {
+    const hostObj = JSON.parse(localStorage.getItem("hostTeam"));
+    if (hostObj) {
+      hostCode = (hostObj.code || hostObj.hostTeam?.id || hostObj.id || "").toUpperCase();
+    }
+  } catch (e) {}
+
+  // 5) 본선 팀 = 조 1·2위 + 와일드 카드
+  const finalists = [...groupWinners, ...selectedWildcards];
+
+  finalists.forEach(t => {
+    const code = (t.id || t.code || "").toUpperCase();
+    if (!code) return;
+
+    // 개최국이면 스킵
+    if (hostCode && code === hostCode) return;
+
+    addQualifiedTeamToWorldcup({
+      code: code,
+      name: t.name,
+      confed: "UEFA",
+      flagUrl: t.flag,
+      isHost: false
+    });
+  });
+
+  alert("UEFA 본선 진출팀을 wc_slots에 저장했습니다.");
+}
+
+function renderWildcardTable(rows) {
+  const wrap = document.getElementById('wildcardTableWrap');
+  if (!rows.length) {
+    wrap.innerHTML = '<div style="font-size:12px;color:#6b7280;">조별 3위가 계산되면 순위가 표시됩니다.</div>';
+    return;
+  }
+  let html = '<table><thead><tr>' +
+    '<th style="width:32px;">순위</th><th>조 / 팀</th>' +
+    '<th>경기</th><th>승점</th><th>승</th><th>무</th><th>패</th>' +
+    '<th>득점</th><th>실점</th><th>득실</th>' +
+    '</tr></thead><tbody>';
+
+  rows.forEach((r, idx) => {
+    const cls = idx < WILDCARD_SLOTS ? 'row-wildcard' : 'row-elim';
+    html += `<tr class="${cls}">
+      <td>${idx+1}</td>
+      <td class="team-col">
+        [${r.group}조]
+        <span class="flag-small"><img src="${r.flag}" alt="${r.name}"></span>${r.name}
+      </td>
+      <td>${r.played}</td>
+      <td>${r.pts}</td>
+      <td>${r.win}</td>
+      <td>${r.draw}</td>
+      <td>${r.loss}</td>
+      <td>${r.gf}</td>
+      <td>${r.ga}</td>
+      <td>${r.gd}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+
+/* ---------- 레전드 / 상단 문구 ---------- */
+function updateLegends() {
+  const groupLegend = document.getElementById('groupLegend');
+  if (groupLegend) {
+    groupLegend.innerHTML = `
+      <span><span class="legend-mark lg-green"></span>조 1~2위: 본선 직행</span>
+      <span><span class="legend-mark lg-blue"></span>3위 중 상위 ${WILDCARD_SLOTS}팀: 와일드 카드</span>
+    `;
+  }
+
+  const wildcardLegend = document.getElementById('wildcardLegend');
+  if (wildcardLegend) {
+    wildcardLegend.innerHTML = `
+      <span><span class="legend-mark lg-blue"></span>본선 진출 (상위 ${WILDCARD_SLOTS}팀)</span>
+      <span><span class="legend-mark lg-gray"></span>탈락</span>
+    `;
+  }
+
+  const subtitle = document.getElementById('topSubtitle');
+  if (subtitle) {
+    const totalFinalTickets = 20 + WILDCARD_SLOTS; // 24 or 23
+    subtitle.textContent =
+      `1차 예선(10조). UEFA 랭킹 기반 6개 시드, 조별 상위 1~2위 + 3위 중 상위 ${WILDCARD_SLOTS}팀 본선 ${totalFinalTickets}장.`;
+  }
+}
+
+/* ---------- 전체 갱신 ---------- */
+function updateStandingsAndWildcard() {
+  const allStandings = [];
+  for (let g=0; g<NUM_GROUPS; g++) {
+    if (!groups[g].length) {
+      allStandings[g] = [];
+      continue;
+    }
+    allStandings[g] = calcStandingsForGroup(g);
+  }
+  renderStandingsForGroup(currentGroupIndex, allStandings[currentGroupIndex]);
+  const wildcardRows = calcWildcardRows(allStandings);
+  renderWildcardTable(wildcardRows);
+}
+
+/* ---------- 그룹 탭 ---------- */
+function renderGroupTabs() {
+  const area = document.getElementById('groupTabArea');
+  area.innerHTML = '';
+  for (let i=0;i<NUM_GROUPS;i++) {
+    const btn = document.createElement('button');
+    btn.textContent = getGroupLabel(i) + '조';
+    btn.className = i===currentGroupIndex ? '' : 'secondary';
+    btn.addEventListener('click', () => {
+      currentGroupIndex = i;
+      renderGroupTabs();
+      renderGroupHeader(i);
+      renderFixturesForGroup(i);
+      const standings = groups[i].length ? calcStandingsForGroup(i) : [];
+      renderStandingsForGroup(i, standings);
+    });
+    area.appendChild(btn);
+  }
+}
+
+/* ---------- 초기화 ---------- */
+function resetAll() {
+  for (let i=0;i<NUM_GROUPS;i++) {
+    groups[i] = [];
+    fixturesByGroup[i] = [];
+  }
+  currentGroupIndex = 0;
+  potAssigned = [false,false,false,false,false,false];
+  for (let i=1;i<=6;i++) {
+    const btn = document.getElementById('potBtn'+i);
+    if (btn) btn.disabled = false;
+  }
+  renderPots();
+  renderGroupTabs();
+  renderGroupHeader(0);
+  renderFixturesForGroup(0);
+  document.getElementById('standingsTableWrap').innerHTML =
+    '<div style="font-size:12px;color:#6b7280;">조 추첨 후 순위가 표시됩니다.</div>';
+  document.getElementById('wildcardTableWrap').innerHTML =
+    '<div style="font-size:12px;color:#6b7280;">조별 3위가 계산되면 순위가 표시됩니다.</div>';
+}
+
+/* ---------- 메인 ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  // 개최국/팀 수 반영
+  initTournamentState();
+  potsBase = buildPots();
+  updateLegends();
+  resetAll();
+
+  // 전체 조 추첨
+  document.getElementById('drawAllBtn').addEventListener('click', () => {
+    drawAllGroups();
+    renderGroupTabs();
+    renderGroupHeader(currentGroupIndex);
+    renderFixturesForGroup(currentGroupIndex);
+    updateStandingsAndWildcard();
+  });
+
+  // 초기화
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    resetAll();
+  });
+
+  // 시드별 배정 버튼
+  document.querySelectorAll('[data-pot]').forEach(btn => {
+    const idx = Number(btn.dataset.pot) - 1;
+    btn.addEventListener('click', () => {
+      assignPot(idx);
+    });
+  });
+
+  // 와일드 카드 토글
+  const wildcardBtn = document.getElementById('wildcardToggleBtn');
+  const groupsLayout = document.getElementById('groupsLayout');
+  const wildcardView = document.getElementById('wildcardView');
+  let wildcardMode = false;
+
+  wildcardBtn.addEventListener('click', () => {
+    wildcardMode = !wildcardMode;
+    if (wildcardMode) {
+      groupsLayout.style.display = 'none';
+      wildcardView.style.display = 'block';
+      wildcardBtn.textContent = '조 보기';
+    } else {
+      groupsLayout.style.display = 'grid';
+      wildcardView.style.display = 'none';
+      wildcardBtn.textContent = '와일드 카드 보기';
+    }
+  });
+  
+  // ★ UEFA 본선 저장 버튼 연결
+    const saveUefaBtn = document.getElementById('saveUefaQualifiersBtn');
+    if (saveUefaBtn) {
+      saveUefaBtn.addEventListener('click', saveUefaQualifiersToWorldcupSlots);
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>월드컵 시뮬레이터</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f5fb;
+      color: #111827;
+    }
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+    h1 { margin: 0 0 8px; }
+    .subtitle {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(15,23,42,0.08);
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: transform .1s ease, box-shadow .1s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(15,23,42,0.12);
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .card-desc {
+      font-size: 12px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>월드컵 시뮬레이터</h1>
+    <div class="subtitle">
+      개최국 선택 → 대륙별 예선 → 월드컵 본선까지 한 곳에서 이동.
+    </div>
+
+    <div class="grid">
+      <div class="card" onclick="go('host.html')">
+        <div class="card-title">개최국 설정</div>
+        <div class="card-desc">월드컵 개최국/공동 개최국 선택</div>
+      </div>
+      <div class="card" onclick="go('afc.html')">
+        <div class="card-title">AFC 예선</div>
+        <div class="card-desc">아시아 지역 예선 시뮬레이션</div>
+      </div>
+      <div class="card" onclick="go('uefa.html')">
+        <div class="card-title">UEFA 예선</div>
+        <div class="card-desc">유럽 지역 예선 시뮬레이션</div>
+      </div>
+      <div class="card" onclick="go('concacaf.html')">
+        <div class="card-title">CONCACAF 예선</div>
+        <div class="card-desc">북중미 지역 예선 시뮬레이션</div>
+      </div>
+      <div class="card" onclick="go('conmebol.html')">
+        <div class="card-title">CONMEBOL 예선</div>
+        <div class="card-desc">남미 지역 예선 시뮬레이션</div>
+      </div>
+      <div class="card" onclick="go('caf.html')">
+        <div class="card-title">CAF 예선</div>
+        <div class="card-desc">아프리카 지역 예선 시뮬레이션</div>
+      </div>
+      <div class="card" onclick="go('ofc.html')">
+        <div class="card-title">OFC 예선</div>
+        <div class="card-desc">오세아니아 지역 예선 시뮬레이션</div>
+      </div>
+      <div class="card" onclick="go('worldcup.html')">
+        <div class="card-title">월드컵 본선</div>
+        <div class="card-desc">개최국 + 예선 통과팀으로 본선 진행</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function go(path) {
+      location.href = path;
+    }
+  </script>
+</body>
+</html>

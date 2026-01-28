@@ -1,0 +1,1472 @@
+[
+  {
+    "rank": 1,
+    "confed": "UEFA",
+    "code": "ESP",
+    "name": "스페인",
+    "points": 1880.76
+  },
+  {
+    "rank": 2,
+    "confed": "CONMEBOL",
+    "code": "ARG",
+    "name": "아르헨티나",
+    "points": 1872.43
+  },
+  {
+    "rank": 3,
+    "confed": "UEFA",
+    "code": "FRA",
+    "name": "프랑스",
+    "points": 1862.71
+  },
+  {
+    "rank": 4,
+    "confed": "UEFA",
+    "code": "ENG",
+    "name": "잉글랜드",
+    "points": 1824.03
+  },
+  {
+    "rank": 5,
+    "confed": "UEFA",
+    "code": "POR",
+    "name": "포르투갈",
+    "points": 1778.0
+  },
+  {
+    "rank": 6,
+    "confed": "UEFA",
+    "code": "NED",
+    "name": "네덜란드",
+    "points": 1759.96
+  },
+  {
+    "rank": 7,
+    "confed": "CONMEBOL",
+    "code": "BRA",
+    "name": "브라질",
+    "points": 1758.85
+  },
+  {
+    "rank": 8,
+    "confed": "UEFA",
+    "code": "BEL",
+    "name": "벨기에",
+    "points": 1740.01
+  },
+  {
+    "rank": 9,
+    "confed": "UEFA",
+    "code": "ITA",
+    "name": "이탈리아",
+    "points": 1717.15
+  },
+  {
+    "rank": 10,
+    "confed": "UEFA",
+    "code": "GER",
+    "name": "독일",
+    "points": 1713.3
+  },
+  {
+    "rank": 11,
+    "confed": "UEFA",
+    "code": "CRO",
+    "name": "크로아티아",
+    "points": 1710.15
+  },
+  {
+    "rank": 12,
+    "confed": "CAF",
+    "code": "MAR",
+    "name": "모로코",
+    "points": 1710.11
+  },
+  {
+    "rank": 13,
+    "confed": "CONMEBOL",
+    "code": "COL",
+    "name": "콜롬비아",
+    "points": 1695.72
+  },
+  {
+    "rank": 14,
+    "confed": "CONCACAF",
+    "code": "MEX",
+    "name": "멕시코",
+    "points": 1682.52
+  },
+  {
+    "rank": 15,
+    "confed": "CONMEBOL",
+    "code": "URY",
+    "name": "우루과이",
+    "points": 1677.57
+  },
+  {
+    "rank": 16,
+    "confed": "CONCACAF",
+    "code": "USA",
+    "name": "미국",
+    "points": 1673.49
+  },
+  {
+    "rank": 17,
+    "confed": "UEFA",
+    "code": "SUI",
+    "name": "스위스",
+    "points": 1653.32
+  },
+  {
+    "rank": 18,
+    "confed": "CAF",
+    "code": "SEN",
+    "name": "세네갈",
+    "points": 1650.61
+  },
+  {
+    "rank": 19,
+    "confed": "UEFA",
+    "code": "DEN",
+    "name": "덴마크",
+    "points": 1641.02
+  },
+  {
+    "rank": 20,
+    "confed": "AFC",
+    "code": "JPN",
+    "name": "일본",
+    "points": 1645.34
+  },
+  {
+    "rank": 21,
+    "confed": "AFC",
+    "code": "IRN",
+    "name": "이란",
+    "points": 1618.28
+  },
+  {
+    "rank": 22,
+    "confed": "AFC",
+    "code": "KOR",
+    "name": "대한민국",
+    "points": 1593.92
+  },
+  {
+    "rank": 23,
+    "confed": "CONMEBOL",
+    "code": "ECU",
+    "name": "에콰도르",
+    "points": 1589.72
+  },
+  {
+    "rank": 24,
+    "confed": "UEFA",
+    "code": "AUT",
+    "name": "오스트리아",
+    "points": 1586.98
+  },
+  {
+    "rank": 25,
+    "confed": "AFC",
+    "code": "AUS",
+    "name": "호주",
+    "points": 1584.02
+  },
+  {
+    "rank": 26,
+    "confed": "UEFA",
+    "code": "TUR",
+    "name": "튀르키예",
+    "points": 1570.18
+  },
+  {
+    "rank": 27,
+    "confed": "UEFA",
+    "code": "UKR",
+    "name": "우크라이나",
+    "points": 1555.36
+  },
+  {
+    "rank": 28,
+    "confed": "CONCACAF",
+    "code": "CAN",
+    "name": "캐나다",
+    "points": 1554.63
+  },
+  {
+    "rank": 29,
+    "confed": "UEFA",
+    "code": "NOR",
+    "name": "노르웨이",
+    "points": 1532.14
+  },
+  {
+    "rank": 30,
+    "confed": "UEFA",
+    "code": "RUS",
+    "name": "러시아",
+    "points": 1530.95
+  },
+  {
+    "rank": 31,
+    "confed": "CONCACAF",
+    "code": "PAN",
+    "name": "파나마",
+    "points": 1528.21
+  },
+  {
+    "rank": 32,
+    "confed": "CAF",
+    "code": "EGY",
+    "name": "이집트",
+    "points": 1525.31
+  },
+  {
+    "rank": 33,
+    "confed": "UEFA",
+    "code": "POL",
+    "name": "폴란드",
+    "points": 1523.84
+  },
+  {
+    "rank": 34,
+    "confed": "UEFA",
+    "code": "WAL",
+    "name": "웨일스",
+    "points": 1518.81
+  },
+  {
+    "rank": 35,
+    "confed": "CAF",
+    "code": "ALG",
+    "name": "알제리",
+    "points": 1510.26
+  },
+  {
+    "rank": 36,
+    "confed": "UEFA",
+    "code": "SRB",
+    "name": "세르비아",
+    "points": 1507.84
+  },
+  {
+    "rank": 37,
+    "confed": "UEFA",
+    "code": "HUN",
+    "name": "헝가리",
+    "points": 1504.92
+  },
+  {
+    "rank": 38,
+    "confed": "UEFA",
+    "code": "SCO",
+    "name": "스코틀랜드",
+    "points": 1504.2
+  },
+  {
+    "rank": 39,
+    "confed": "CONMEBOL",
+    "code": "PRY",
+    "name": "파라과이",
+    "points": 1498.15
+  },
+  {
+    "rank": 40,
+    "confed": "UEFA",
+    "code": "SWE",
+    "name": "스웨덴",
+    "points": 1496.99
+  },
+  {
+    "rank": 41,
+    "confed": "CAF",
+    "code": "NGA",
+    "name": "나이지리아",
+    "points": 1495.46
+  },
+  {
+    "rank": 42,
+    "confed": "CAF",
+    "code": "CIV",
+    "name": "코트디부아르",
+    "points": 1491.78
+  },
+  {
+    "rank": 43,
+    "confed": "CAF",
+    "code": "TUN",
+    "name": "튀니지",
+    "points": 1490.8
+  },
+  {
+    "rank": 44,
+    "confed": "UEFA",
+    "code": "CZE",
+    "name": "체코",
+    "points": 1484.68
+  },
+  {
+    "rank": 45,
+    "confed": "CONCACAF",
+    "code": "CRC",
+    "name": "코스타리카",
+    "points": 1483.74
+  },
+  {
+    "rank": 46,
+    "confed": "UEFA",
+    "code": "SVK",
+    "name": "슬로바키아",
+    "points": 1483.35
+  },
+  {
+    "rank": 47,
+    "confed": "UEFA",
+    "code": "ROU",
+    "name": "루마니아",
+    "points": 1480.13
+  },
+  {
+    "rank": 48,
+    "confed": "UEFA",
+    "code": "GRE",
+    "name": "그리스",
+    "points": 1472.99
+  },
+  {
+    "rank": 49,
+    "confed": "CONMEBOL",
+    "code": "PER",
+    "name": "페루",
+    "points": 1464.05
+  },
+  {
+    "rank": 50,
+    "confed": "CONMEBOL",
+    "code": "VEN",
+    "name": "베네수엘라",
+    "points": 1463.27
+  },
+  {
+    "rank": 51,
+    "confed": "UEFA",
+    "code": "SVN",
+    "name": "슬로베니아",
+    "points": 1462.93
+  },
+  {
+    "rank": 52,
+    "confed": "AFC",
+    "code": "QAT",
+    "name": "카타르",
+    "points": 1461.6
+  },
+  {
+    "rank": 53,
+    "confed": "CAF",
+    "code": "MLI",
+    "name": "말리",
+    "points": 1455.78
+  },
+  {
+    "rank": 54,
+    "confed": "CAF",
+    "code": "CMR",
+    "name": "카메룬",
+    "points": 1453.71
+  },
+  {
+    "rank": 55,
+    "confed": "AFC",
+    "code": "UZB",
+    "name": "우즈베키스탄",
+    "points": 1452.34
+  },
+  {
+    "rank": 56,
+    "confed": "CONMEBOL",
+    "code": "CHL",
+    "name": "칠레",
+    "points": 1446.93
+  },
+  {
+    "rank": 57,
+    "confed": "AFC",
+    "code": "IRQ",
+    "name": "이라크",
+    "points": 1428.69
+  },
+  {
+    "rank": 58,
+    "confed": "AFC",
+    "code": "KSA",
+    "name": "사우디 아라비아",
+    "points": 1427.37
+  },
+  {
+    "rank": 59,
+    "confed": "CAF",
+    "code": "RSA",
+    "name": "남아프리카 공화국",
+    "points": 1423.17
+  },
+  {
+    "rank": 60,
+    "confed": "CAF",
+    "code": "COD",
+    "name": "콩고 민주공화국",
+    "points": 1421.32
+  },
+  {
+    "rank": 61,
+    "confed": "UEFA",
+    "code": "ALB",
+    "name": "알바니아",
+    "points": 1401.34
+  },
+  {
+    "rank": 62,
+    "confed": "UEFA",
+    "code": "IRL",
+    "name": "아일랜드",
+    "points": 1401.18
+  },
+  {
+    "rank": 63,
+    "confed": "CAF",
+    "code": "BFA",
+    "name": "부르키나파소",
+    "points": 1398.05
+  },
+  {
+    "rank": 64,
+    "confed": "CONCACAF",
+    "code": "HON",
+    "name": "온두라스",
+    "points": 1396.23
+  },
+  {
+    "rank": 65,
+    "confed": "UEFA",
+    "code": "MKD",
+    "name": "북마케도니아",
+    "points": 1390.6
+  },
+  {
+    "rank": 66,
+    "confed": "AFC",
+    "code": "JOR",
+    "name": "요르단",
+    "points": 1380.87
+  },
+  {
+    "rank": 67,
+    "confed": "AFC",
+    "code": "UAE",
+    "name": "아랍 에미리트",
+    "points": 1379.93
+  },
+  {
+    "rank": 68,
+    "confed": "CONCACAF",
+    "code": "JAM",
+    "name": "자메이카",
+    "points": 1367.18
+  },
+  {
+    "rank": 69,
+    "confed": "UEFA",
+    "code": "NIR",
+    "name": "북아일랜드",
+    "points": 1366.27
+  },
+  {
+    "rank": 70,
+    "confed": "UEFA",
+    "code": "GEO",
+    "name": "조지아",
+    "points": 1365.92
+  },
+  {
+    "rank": 71,
+    "confed": "CAF",
+    "code": "CPV",
+    "name": "카보베르데",
+    "points": 1364.26
+  },
+  {
+    "rank": 72,
+    "confed": "UEFA",
+    "code": "FIN",
+    "name": "핀란드",
+    "points": 1360.27
+  },
+  {
+    "rank": 73,
+    "confed": "CAF",
+    "code": "GHA",
+    "name": "가나",
+    "points": 1356.4
+  },
+  {
+    "rank": 74,
+    "confed": "UEFA",
+    "code": "ISL",
+    "name": "아이슬란드",
+    "points": 1344.84
+  },
+  {
+    "rank": 75,
+    "confed": "UEFA",
+    "code": "BIH",
+    "name": "보스니아 헤르체고비나",
+    "points": 1341.36
+  },
+  {
+    "rank": 76,
+    "confed": "CONMEBOL",
+    "code": "BOL",
+    "name": "볼리비아",
+    "points": 1334.55
+  },
+  {
+    "rank": 77,
+    "confed": "CAF",
+    "code": "GAB",
+    "name": "가봉",
+    "points": 1329.91
+  },
+  {
+    "rank": 78,
+    "confed": "UEFA",
+    "code": "ISR",
+    "name": "이스라엘",
+    "points": 1324.57
+  },
+  {
+    "rank": 79,
+    "confed": "AFC",
+    "code": "OMA",
+    "name": "오만",
+    "points": 1312.32
+  },
+  {
+    "rank": 80,
+    "confed": "CAF",
+    "code": "GUI",
+    "name": "기니",
+    "points": 1305.22
+  },
+  {
+    "rank": 81,
+    "confed": "UEFA",
+    "code": "MNE",
+    "name": "몬테네그로",
+    "points": 1297.88
+  },
+  {
+    "rank": 82,
+    "confed": "CONCACAF",
+    "code": "CUR",
+    "name": "퀴라소",
+    "points": 1295.52
+  },
+  {
+    "rank": 83,
+    "confed": "CAF",
+    "code": "UGA",
+    "name": "우간다",
+    "points": 1287.75
+  },
+  {
+    "rank": 84,
+    "confed": "UEFA",
+    "code": "KVX",
+    "name": "코소보",
+    "points": 1284.73
+  },
+  {
+    "rank": 85,
+    "confed": "OFC",
+    "code": "NZL",
+    "name": "뉴질랜드",
+    "points": 1283.3
+  },
+  {
+    "rank": 86,
+    "confed": "AFC",
+    "code": "SYR",
+    "name": "시리아",
+    "points": 1274.16
+  },
+  {
+    "rank": 87,
+    "confed": "CAF",
+    "code": "ZAM",
+    "name": "잠비아",
+    "points": 1268.6
+  },
+  {
+    "rank": 88,
+    "confed": "CONCACAF",
+    "code": "HAI",
+    "name": "아이티",
+    "points": 1268.32
+  },
+  {
+    "rank": 89,
+    "confed": "CAF",
+    "code": "ANG",
+    "name": "앙골라",
+    "points": 1267.45
+  },
+  {
+    "rank": 90,
+    "confed": "AFC",
+    "code": "BHR",
+    "name": "바레인",
+    "points": 1267.16
+  },
+  {
+    "rank": 91,
+    "confed": "UEFA",
+    "code": "BUL",
+    "name": "불가리아",
+    "points": 1263.07
+  },
+  {
+    "rank": 92,
+    "confed": "CAF",
+    "code": "BEN",
+    "name": "베냉",
+    "points": 1259.39
+  },
+  {
+    "rank": 93,
+    "confed": "AFC",
+    "code": "CHN",
+    "name": "중국",
+    "points": 1249.06
+  },
+  {
+    "rank": 94,
+    "confed": "CONCACAF",
+    "code": "SLV",
+    "name": "엘살바도르",
+    "points": 1247.77
+  },
+  {
+    "rank": 95,
+    "confed": "CONCACAF",
+    "code": "GUA",
+    "name": "과테말라",
+    "points": 1241.52
+  },
+  {
+    "rank": 96,
+    "confed": "AFC",
+    "code": "THA",
+    "name": "태국",
+    "points": 1235.36
+  },
+  {
+    "rank": 97,
+    "confed": "UEFA",
+    "code": "LUX",
+    "name": "룩셈부르크",
+    "points": 1231.8
+  },
+  {
+    "rank": 98,
+    "confed": "AFC",
+    "code": "PLE",
+    "name": "팔레스타인",
+    "points": 1230.55
+  },
+  {
+    "rank": 99,
+    "confed": "CAF",
+    "code": "EQG",
+    "name": "적도 기니",
+    "points": 1229.91
+  },
+  {
+    "rank": 100,
+    "confed": "CONCACAF",
+    "code": "TRI",
+    "name": "트리니다드 토바고",
+    "points": 1229.9
+  },
+  {
+    "rank": 101,
+    "confed": "CAF",
+    "code": "MOZ",
+    "name": "모잠비크",
+    "points": 1227.53
+  },
+  {
+    "rank": 102,
+    "confed": "AFC",
+    "code": "TJK",
+    "name": "타지키스탄",
+    "points": 1220.21
+  },
+  {
+    "rank": 103,
+    "confed": "UEFA",
+    "code": "BLR",
+    "name": "벨라루스",
+    "points": 1212.78
+  },
+  {
+    "rank": 104,
+    "confed": "UEFA",
+    "code": "ARM",
+    "name": "아르메니아",
+    "points": 1204.7
+  },
+  {
+    "rank": 105,
+    "confed": "AFC",
+    "code": "KGZ",
+    "name": "키르기스스탄",
+    "points": 1201.22
+  },
+  {
+    "rank": 106,
+    "confed": "CAF",
+    "code": "MAD",
+    "name": "마다가스카르",
+    "points": 1193.48
+  },
+  {
+    "rank": 107,
+    "confed": "CAF",
+    "code": "TAN",
+    "name": "탄자니아",
+    "points": 1187.08
+  },
+  {
+    "rank": 108,
+    "confed": "CAF",
+    "code": "NIG",
+    "name": "니제르",
+    "points": 1187.0
+  },
+  {
+    "rank": 109,
+    "confed": "CAF",
+    "code": "KEN",
+    "name": "케냐",
+    "points": 1185.55
+  },
+  {
+    "rank": 110,
+    "confed": "AFC",
+    "code": "LBN",
+    "name": "레바논",
+    "points": 1184.68
+  },
+  {
+    "rank": 111,
+    "confed": "AFC",
+    "code": "VIE",
+    "name": "베트남",
+    "points": 1183.62
+  },
+  {
+    "rank": 112,
+    "confed": "CAF",
+    "code": "COM",
+    "name": "코모로",
+    "points": 1180.18
+  },
+  {
+    "rank": 113,
+    "confed": "CAF",
+    "code": "MTN",
+    "name": "모리타니",
+    "points": 1179.2
+  },
+  {
+    "rank": 114,
+    "confed": "CAF",
+    "code": "LBY",
+    "name": "리비아",
+    "points": 1177.77
+  },
+  {
+    "rank": 115,
+    "confed": "UEFA",
+    "code": "KAZ",
+    "name": "카자흐스탄",
+    "points": 1168.47
+  },
+  {
+    "rank": 116,
+    "confed": "CAF",
+    "code": "NAM",
+    "name": "나미비아",
+    "points": 1162.79
+  },
+  {
+    "rank": 117,
+    "confed": "CAF",
+    "code": "GAM",
+    "name": "감비아",
+    "points": 1162.12
+  },
+  {
+    "rank": 118,
+    "confed": "AFC",
+    "code": "MAS",
+    "name": "말레이시아",
+    "points": 1161.53
+  },
+  {
+    "rank": 119,
+    "confed": "CAF",
+    "code": "SDN",
+    "name": "수단",
+    "points": 1157.11
+  },
+  {
+    "rank": 120,
+    "confed": "AFC",
+    "code": "PRK",
+    "name": "조선 민주주의공화국",
+    "points": 1151.05
+  },
+  {
+    "rank": 121,
+    "confed": "CAF",
+    "code": "SLE",
+    "name": "시에라리온",
+    "points": 1149.1
+  },
+  {
+    "rank": 122,
+    "confed": "AFC",
+    "code": "IDN",
+    "name": "인도네시아",
+    "points": 1144.73
+  },
+  {
+    "rank": 123,
+    "confed": "UEFA",
+    "code": "AZE",
+    "name": "아제르바이잔",
+    "points": 1142.25
+  },
+  {
+    "rank": 124,
+    "confed": "CAF",
+    "code": "TOG",
+    "name": "토고",
+    "points": 1140.35
+  },
+  {
+    "rank": 125,
+    "confed": "UEFA",
+    "code": "CYP",
+    "name": "키프로스",
+    "points": 1137.43
+  },
+  {
+    "rank": 126,
+    "confed": "CONCACAF",
+    "code": "SUR",
+    "name": "수리남",
+    "points": 1135.89
+  },
+  {
+    "rank": 127,
+    "confed": "UEFA",
+    "code": "FRO",
+    "name": "페로 제도",
+    "points": 1132.41
+  },
+  {
+    "rank": 128,
+    "confed": "CAF",
+    "code": "MWI",
+    "name": "말라위",
+    "points": 1129.89
+  },
+  {
+    "rank": 129,
+    "confed": "CAF",
+    "code": "ZIM",
+    "name": "짐바브웨",
+    "points": 1125.55
+  },
+  {
+    "rank": 130,
+    "confed": "UEFA",
+    "code": "EST",
+    "name": "에스토니아",
+    "points": 1122.25
+  },
+  {
+    "rank": 131,
+    "confed": "CAF",
+    "code": "RWA",
+    "name": "르완다",
+    "points": 1117.78
+  },
+  {
+    "rank": 132,
+    "confed": "CAF",
+    "code": "GNB",
+    "name": "기니비사우",
+    "points": 1108.09
+  },
+  {
+    "rank": 133,
+    "confed": "CONCACAF",
+    "code": "NCA",
+    "name": "니카라과",
+    "points": 1106.83
+  },
+  {
+    "rank": 134,
+    "confed": "CAF",
+    "code": "CGO",
+    "name": "콩고 공화국",
+    "points": 1105.96
+  },
+  {
+    "rank": 135,
+    "confed": "AFC",
+    "code": "KUW",
+    "name": "쿠웨이트",
+    "points": 1096.82
+  },
+  {
+    "rank": 136,
+    "confed": "AFC",
+    "code": "IND",
+    "name": "인도",
+    "points": 1096.65
+  },
+  {
+    "rank": 137,
+    "confed": "CAF",
+    "code": "BOT",
+    "name": "보츠와나",
+    "points": 1084.56
+  },
+  {
+    "rank": 138,
+    "confed": "CAF",
+    "code": "LBR",
+    "name": "라이베리아",
+    "points": 1084.46
+  },
+  {
+    "rank": 139,
+    "confed": "UEFA",
+    "code": "LVA",
+    "name": "라트비아",
+    "points": 1084.26
+  },
+  {
+    "rank": 140,
+    "confed": "CAF",
+    "code": "CTA",
+    "name": "중앙아프리카 공화국",
+    "points": 1083.57
+  },
+  {
+    "rank": 141,
+    "confed": "AFC",
+    "code": "PHI",
+    "name": "필리핀",
+    "points": 1081.44
+  },
+  {
+    "rank": 142,
+    "confed": "AFC",
+    "code": "TKM",
+    "name": "투르크메니스탄",
+    "points": 1078.09
+  },
+  {
+    "rank": 143,
+    "confed": "CONCACAF",
+    "code": "DOM",
+    "name": "도미니카 공화국",
+    "points": 1073.54
+  },
+  {
+    "rank": 144,
+    "confed": "CAF",
+    "code": "LES",
+    "name": "레소토",
+    "points": 1069.83
+  },
+  {
+    "rank": 145,
+    "confed": "CAF",
+    "code": "BDI",
+    "name": "부룬디",
+    "points": 1060.22
+  },
+  {
+    "rank": 146,
+    "confed": "UEFA",
+    "code": "LTU",
+    "name": "리투아니아",
+    "points": 1055.58
+  },
+  {
+    "rank": 147,
+    "confed": "CAF",
+    "code": "ETH",
+    "name": "에티오피아",
+    "points": 1055.36
+  },
+  {
+    "rank": 148,
+    "confed": "AFC",
+    "code": "HKG",
+    "name": "홍콩",
+    "points": 1052.54
+  },
+  {
+    "rank": 149,
+    "confed": "OFC",
+    "code": "SOL",
+    "name": "솔로몬 제도",
+    "points": 1045.58
+  },
+  {
+    "rank": 150,
+    "confed": "OFC",
+    "code": "NCL",
+    "name": "누벨칼레도니",
+    "points": 1042.62
+  },
+  {
+    "rank": 151,
+    "confed": "CONCACAF",
+    "code": "SKN",
+    "name": "세인트키츠 네비스",
+    "points": 1041.53
+  },
+  {
+    "rank": 152,
+    "confed": "AFC",
+    "code": "YEM",
+    "name": "예멘",
+    "points": 1040.13
+  },
+  {
+    "rank": 153,
+    "confed": "CONCACAF",
+    "code": "GUY",
+    "name": "가이아나",
+    "points": 1037.34
+  },
+  {
+    "rank": 154,
+    "confed": "OFC",
+    "code": "FIJ",
+    "name": "피지",
+    "points": 1035.11
+  },
+  {
+    "rank": 155,
+    "confed": "AFC",
+    "code": "SGP",
+    "name": "싱가포르",
+    "points": 1030.49
+  },
+  {
+    "rank": 156,
+    "confed": "UEFA",
+    "code": "MDA",
+    "name": "몰도바",
+    "points": 1020.2
+  },
+  {
+    "rank": 157,
+    "confed": "CONCACAF",
+    "code": "PUR",
+    "name": "푸에르토리코",
+    "points": 1020.07
+  },
+  {
+    "rank": 158,
+    "confed": "OFC",
+    "code": "TAH",
+    "name": "타히티",
+    "points": 1019.04
+  },
+  {
+    "rank": 159,
+    "confed": "CAF",
+    "code": "SWZ",
+    "name": "에스와티니",
+    "points": 1010.52
+  },
+  {
+    "rank": 160,
+    "confed": "CONCACAF",
+    "code": "ATG",
+    "name": "앤티가 바부다",
+    "points": 992.38
+  },
+  {
+    "rank": 161,
+    "confed": "OFC",
+    "code": "VAN",
+    "name": "바누아투",
+    "points": 991.59
+  },
+  {
+    "rank": 162,
+    "confed": "AFC",
+    "code": "AFG",
+    "name": "아프가니스탄",
+    "points": 991.19
+  },
+  {
+    "rank": 163,
+    "confed": "AFC",
+    "code": "MYA",
+    "name": "미얀마",
+    "points": 990.81
+  },
+  {
+    "rank": 164,
+    "confed": "CONCACAF",
+    "code": "LCA",
+    "name": "세인트루시아",
+    "points": 990.69
+  },
+  {
+    "rank": 165,
+    "confed": "CONCACAF",
+    "code": "GRN",
+    "name": "그레나다",
+    "points": 986.48
+  },
+  {
+    "rank": 166,
+    "confed": "UEFA",
+    "code": "MLT",
+    "name": "몰타",
+    "points": 979.18
+  },
+  {
+    "rank": 167,
+    "confed": "CAF",
+    "code": "SSD",
+    "name": "남수단",
+    "points": 978.7
+  },
+  {
+    "rank": 168,
+    "confed": "CONCACAF",
+    "code": "BER",
+    "name": "버뮤다",
+    "points": 976.75
+  },
+  {
+    "rank": 169,
+    "confed": "CONCACAF",
+    "code": "CUB",
+    "name": "쿠바",
+    "points": 975.34
+  },
+  {
+    "rank": 170,
+    "confed": "OFC",
+    "code": "PNG",
+    "name": "파푸아뉴기니",
+    "points": 969.17
+  },
+  {
+    "rank": 171,
+    "confed": "CONCACAF",
+    "code": "VIN",
+    "name": "세인트빈센트 그레나딘",
+    "points": 962.43
+  },
+  {
+    "rank": 172,
+    "confed": "UEFA",
+    "code": "AND",
+    "name": "안도라",
+    "points": 955.1
+  },
+  {
+    "rank": 173,
+    "confed": "AFC",
+    "code": "MDV",
+    "name": "몰디브",
+    "points": 954.53
+  },
+  {
+    "rank": 174,
+    "confed": "AFC",
+    "code": "TPE",
+    "name": "대만",
+    "points": 947.64
+  },
+  {
+    "rank": 175,
+    "confed": "CONCACAF",
+    "code": "BRB",
+    "name": "바베이도스",
+    "points": 919.97
+  },
+  {
+    "rank": 176,
+    "confed": "CONCACAF",
+    "code": "MSR",
+    "name": "몬트세랫",
+    "points": 916.75
+  },
+  {
+    "rank": 177,
+    "confed": "CAF",
+    "code": "MRI",
+    "name": "모리셔스",
+    "points": 915.51
+  },
+  {
+    "rank": 178,
+    "confed": "CAF",
+    "code": "CHA",
+    "name": "차드",
+    "points": 913.87
+  },
+  {
+    "rank": 179,
+    "confed": "AFC",
+    "code": "CAM",
+    "name": "캄보디아",
+    "points": 910.21
+  },
+  {
+    "rank": 180,
+    "confed": "AFC",
+    "code": "NEP",
+    "name": "네팔",
+    "points": 909.32
+  },
+  {
+    "rank": 181,
+    "confed": "CONCACAF",
+    "code": "BLZ",
+    "name": "벨리즈",
+    "points": 904.45
+  },
+  {
+    "rank": 182,
+    "confed": "CONCACAF",
+    "code": "DMA",
+    "name": "도미니카 연방",
+    "points": 901.37
+  },
+  {
+    "rank": 183,
+    "confed": "AFC",
+    "code": "BAN",
+    "name": "방글라데시",
+    "points": 894.06
+  },
+  {
+    "rank": 184,
+    "confed": "OFC",
+    "code": "ASA",
+    "name": "아메리칸 사모아",
+    "points": 883.17
+  },
+  {
+    "rank": 185,
+    "confed": "AFC",
+    "code": "BRU",
+    "name": "브루나이",
+    "points": 881.74
+  },
+  {
+    "rank": 186,
+    "confed": "AFC",
+    "code": "MNG",
+    "name": "몽골",
+    "points": 879.75
+  },
+  {
+    "rank": 187,
+    "confed": "OFC",
+    "code": "COK",
+    "name": "쿡 제도",
+    "points": 877.53
+  },
+  {
+    "rank": 188,
+    "confed": "AFC",
+    "code": "LAO",
+    "name": "라오스",
+    "points": 877.05
+  },
+  {
+    "rank": 189,
+    "confed": "AFC",
+    "code": "BHU",
+    "name": "부탄",
+    "points": 876.56
+  },
+  {
+    "rank": 190,
+    "confed": "OFC",
+    "code": "SAM",
+    "name": "사모아",
+    "points": 876.41
+  },
+  {
+    "rank": 191,
+    "confed": "CAF",
+    "code": "STP",
+    "name": "상투메프린시페",
+    "points": 871.63
+  },
+  {
+    "rank": 192,
+    "confed": "AFC",
+    "code": "MAC",
+    "name": "마카오",
+    "points": 865.29
+  },
+  {
+    "rank": 193,
+    "confed": "AFC",
+    "code": "SRI",
+    "name": "스리랑카",
+    "points": 862.17
+  },
+  {
+    "rank": 194,
+    "confed": "CONCACAF",
+    "code": "ARU",
+    "name": "아루바",
+    "points": 861.16
+  },
+  {
+    "rank": 195,
+    "confed": "CONCACAF",
+    "code": "CAY",
+    "name": "케이멘 제도",
+    "points": 853.37
+  },
+  {
+    "rank": 196,
+    "confed": "CAF",
+    "code": "DJI",
+    "name": "지부티",
+    "points": 847.89
+  },
+  {
+    "rank": 197,
+    "confed": "AFC",
+    "code": "TLS",
+    "name": "동티모르",
+    "points": 840.27
+  },
+  {
+    "rank": 198,
+    "confed": "AFC",
+    "code": "PAK",
+    "name": "파키스탄",
+    "points": 837.09
+  },
+  {
+    "rank": 199,
+    "confed": "OFC",
+    "code": "TGA",
+    "name": "통가",
+    "points": 835.64
+  },
+  {
+    "rank": 200,
+    "confed": "UEFA",
+    "code": "GIB",
+    "name": "지브롤터",
+    "points": 823.32
+  },
+  {
+    "rank": 201,
+    "confed": "AFC",
+    "code": "GUM",
+    "name": "괌",
+    "points": 823.08
+  },
+  {
+    "rank": 202,
+    "confed": "CAF",
+    "code": "SOM",
+    "name": "소말리아",
+    "points": 818.59
+  },
+  {
+    "rank": 203,
+    "confed": "CONCACAF",
+    "code": "BAH",
+    "name": "바하마",
+    "points": 807.36
+  },
+  {
+    "rank": 204,
+    "confed": "CAF",
+    "code": "SEY",
+    "name": "세이셸",
+    "points": 805.33
+  },
+  {
+    "rank": 205,
+    "confed": "CONCACAF",
+    "code": "TCA",
+    "name": "터크스 케이커스 제도",
+    "points": 803.98
+  },
+  {
+    "rank": 206,
+    "confed": "UEFA",
+    "code": "LIE",
+    "name": "리히텐슈타인",
+    "points": 801.99
+  },
+  {
+    "rank": 207,
+    "confed": "CONCACAF",
+    "code": "VIR",
+    "name": "미국령 버진아일랜드",
+    "points": 779.71
+  },
+  {
+    "rank": 208,
+    "confed": "CONCACAF",
+    "code": "VGB",
+    "name": "영국령 버진아일랜드",
+    "points": 765.41
+  },
+  {
+    "rank": 209,
+    "confed": "CONCACAF",
+    "code": "AIA",
+    "name": "앵귈라",
+    "points": 758.52
+  },
+  {
+    "rank": 210,
+    "confed": "UEFA",
+    "code": "SMR",
+    "name": "산마리노",
+    "points": 727.95
+  }
+]

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>월드컵 개최국 시뮬레이터</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f5fb;
+      color: #111827;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .top-header {
+      margin-bottom: 12px;
+    }
+    .top-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 2px 0;
+    }
+    .top-subtitle {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .top-tabs {
+      margin-top: 8px;
+      display: flex;
+      gap: 6px;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      background: #2563eb;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    button.secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .section-header h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.8fr);
+      gap: 12px;
+    }
+    @media (max-width: 1024px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .card-caption {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .label {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .input-number {
+      width: 90px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .error {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #dc2626;
+      display: none;
+    }
+
+    /* 결과 UI */
+    .host-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .host-flag-ring {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 30%, #ffffff 0, #ffffff 40%, transparent 41%),
+        radial-gradient(circle, rgba(250,204,21,0.36) 0, transparent 70%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .host-flag {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ffffff;
+    }
+
+    .host-name {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .host-meta {
+      margin-top: 4px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .badge {
+      margin-top: 6px;
+      display: inline-block;
+      padding: 3px 8px;
+      background: #e3edff;
+      border-radius: 8px;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    #hostResult .placeholder {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .legend {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="top-header">
+    <h1 class="top-title">월드컵 개최국 시뮬레이터</h1>
+    <div class="top-subtitle">
+      유럽 → 아시아 → 아프리카 → 북미 → 남미 → 유럽 순으로 6개 대회 = 1순회.
+      같은 순회에서 같은 나라는 한 번만 개최하며, 개최한 나라는 다음 순회는 쉬고 그다음 순회부터 다시 개최 가능합니다.
+    </div>
+    <div class="top-tabs">
+      <button class="secondary">개최국 선정</button>
+    </div>
+  </div>
+
+  <main>
+    <div class="layout">
+      <!-- 좌측: 회차 입력 카드 -->
+      <section class="card">
+        <div class="card-title">대회 회차 선택</div>
+        <div class="card-caption">1~6회차 = 1순회, 7~12회차 = 2순회, 13~18회차 = 3순회…</div>
+
+        <div class="form-row">
+          <label for="tournamentNumber" class="label">회차</label>
+          <input id="tournamentNumber" type="number" min="1" value="1" class="input-number">
+          <button id="loadBtn">개최국 뽑기</button>
+          <button id="resetBtn" class="secondary">초기화</button>
+        </div>
+
+        <div id="errorBox" class="error"></div>
+
+        <div class="legend">
+          규칙 요약:<br/>
+          - 1순회: 유럽 → 아시아 → 아프리카 → 북미 → 남미 → 유럽 (6개 대회)<br/>
+          - 2순회도 같은 순서로 반복<br/>
+          - 어떤 나라가 n순회에서 개최하면 (n+1)순회는 개최 불가, (n+2)순회부터 다시 개최 가능
+        </div>
+      </section>
+
+      <!-- 우측: 결과 카드 -->
+      <section class="card">
+        <div class="card-title">선정된 개최국</div>
+        <div id="hostResult">
+          <div class="placeholder">회차를 입력하면 결과가 표시됩니다.</div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+  // 대륙 코드 → 한글
+  const continentKor = {
+    "EUROPE": "유럽",
+    "ASIA": "아시아",
+    "AFRICA": "아프리카",
+    "NORTH_AMERICA": "북미",
+    "SOUTH_AMERICA": "남미"
+  };
+
+  // 순회 대륙 순서 (유럽 2번 포함, 6개 = 1순회)
+  const CONTINENT_ROTATION = [
+    "EUROPE",
+    "ASIA",
+    "AFRICA",
+    "NORTH_AMERICA",
+    "SOUTH_AMERICA",
+    "EUROPE"
+  ];
+
+  // 개최 가능 후보 목록
+  const HOST_TEAMS = [
+    // 유럽
+    { id: "ESP", name: "스페인",     	continent: "EUROPE", flag: "/flags/유럽/es.svg" },
+    { id: "FRA", name: "프랑스",     	continent: "EUROPE", flag: "/flags/유럽/fr.svg" },
+    { id: "ENG", name: "잉글랜드",   	continent: "EUROPE", flag: "/flags/유럽/gb-eng.svg" },
+    { id: "POR", name: "포르투갈",   	continent: "EUROPE", flag: "/flags/유럽/pt.svg" },
+    { id: "NED", name: "네덜란드",   	continent: "EUROPE", flag: "/flags/유럽/nl.svg" },
+    { id: "BEL", name: "벨기에",     	continent: "EUROPE", flag: "/flags/유럽/be.svg" },
+    { id: "ITA", name: "이탈리아",   	continent: "EUROPE", flag: "/flags/유럽/it.svg" },
+    { id: "GER", name: "독일",       	continent: "EUROPE", flag: "/flags/유럽/de.svg" },
+    { id: "SUI", name: "스위스",     	continent: "EUROPE", flag: "/flags/유럽/ch.svg" },
+    { id: "DEN", name: "덴마크",     	continent: "EUROPE", flag: "/flags/유럽/dk.svg" },
+    { id: "AUT", name: "오스트리아", 	continent: "EUROPE", flag: "/flags/유럽/at.svg" },
+    { id: "TUR", name: "튀르키예",   	continent: "EUROPE", flag: "/flags/유럽/tr.svg" },
+    { id: "RUS", name: "러시아",     	continent: "EUROPE", flag: "/flags/유럽/ru.svg" },
+    { id: "SWE", name: "스웨덴",     	continent: "EUROPE", flag: "/flags/유럽/se.svg" },
+
+    // 아시아
+    { id: "JPN", name: "일본",           	continent: "ASIA", flag: "/flags/아시아/jp.svg" },
+    { id: "IRN", name: "이란",           	continent: "ASIA", flag: "/flags/아시아/ir.svg" },
+    { id: "KOR", name: "대한민국",       	continent: "ASIA", flag: "/flags/아시아/kr.svg" },
+    { id: "AUS", name: "호주",           	continent: "ASIA", flag: "/flags/아시아/au.svg" },
+    { id: "QAT", name: "카타르",         	continent: "ASIA", flag: "/flags/아시아/qa.svg" },
+    { id: "KSA", name: "사우디 아라비아", 	continent: "ASIA", flag: "/flags/아시아/sa.svg" },
+    { id: "UAE", name: "아랍 에미리트",  	continent: "ASIA", flag: "/flags/아시아/ae.svg" },
+
+    // 아프리카
+    { id: "MAR", name: "모로코",           	continent: "AFRICA", flag: "/flags/아프리카/ma.svg" },
+    { id: "EGY", name: "이집트",           	continent: "AFRICA", flag: "/flags/아프리카/eg.svg" },
+    { id: "ALG", name: "알제리",           	continent: "AFRICA", flag: "/flags/아프리카/dz.svg" },
+    { id: "TUN", name: "튀니지",           	continent: "AFRICA", flag: "/flags/아프리카/tn.svg" },
+    { id: "RSA", name: "남아프리카 공화국", 		continent: "AFRICA", flag: "/flags/아프리카/za.svg" },
+
+    // 북미
+    { id: "MEX", name: "멕시코",  	continent: "NORTH_AMERICA", flag: "/flags/북미/mx.svg" },
+    { id: "USA", name: "미국",    	continent: "NORTH_AMERICA", flag: "/flags/북미/us.svg" },
+    { id: "CAN", name: "캐나다",  	continent: "NORTH_AMERICA", flag: "/flags/북미/ca.svg" },
+
+    // 남미
+    { id: "ARG", name: "아르헨티나", 	continent: "SOUTH_AMERICA", flag: "/flags/남미/ar.svg" },
+    { id: "BRA", name: "브라질",     	continent: "SOUTH_AMERICA", flag: "/flags/남미/br.svg" },
+    { id: "URY", name: "우루과이",   	continent: "SOUTH_AMERICA", flag: "/flags/남미/uy.svg" },
+    { id: "CHL", name: "칠레",       	continent: "SOUTH_AMERICA", flag: "/flags/남미/cl.svg" }
+  ];
+
+  function getHostCandidatesByContinent(continent) {
+    return HOST_TEAMS.filter(t => t.continent === continent);
+  }
+
+  // 고정 시드 PRNG (재현 가능하게)
+  function createPRNG(seedInit) {
+    let seed = seedInit >>> 0;
+    return function random() {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      return seed / 0x100000000;
+    };
+  }
+
+  // 규칙 적용해서 "1회차부터 N회차까지" 시뮬레이션 후, N회차 결과 리턴
+  function computeHostForTournament(tournamentNumber) {
+    const rotationLength = CONTINENT_ROTATION.length; // 6
+    const lastHostedRotationByTeam = {}; // teamId -> 마지막 개최한 순회 번호
+    const hostingCountByTeam = {};       // teamId -> 누적 개최 횟수
+
+    const rand = createPRNG(1234567);    // 항상 같은 시퀀스
+
+    let result = null;
+
+    for (let n = 1; n <= tournamentNumber; n++) {
+      const rotationIndex = Math.floor((n - 1) / rotationLength) + 1; // 1,2,...
+      const idxInRotation = (n - 1) % rotationLength;                // 0~5
+      const continent = CONTINENT_ROTATION[idxInRotation];
+
+      const candidates = getHostCandidatesByContinent(continent);
+      if (!candidates.length) {
+        throw new Error("해당 대륙에 개최 후보 팀이 정의되어 있지 않습니다: " + continent);
+      }
+
+      // 규칙: n순회에서 개최한 팀은 (n+1)순회 개최 불가, (n+2)순회부터 가능
+      let eligible = candidates.filter(team => {
+        const lastRotation = lastHostedRotationByTeam[team.id];
+        if (lastRotation == null) return true;
+        // 현재 rotationIndex - lastRotation >= 2 이어야 함
+        return (rotationIndex - lastRotation) >= 2;
+      });
+
+      // 모두 쿨다운이면 이번 순회만 예외적으로 전체 후보 허용
+      if (!eligible.length) {
+        eligible = candidates.slice();
+      }
+
+      const chosen = eligible[Math.floor(rand() * eligible.length)];
+
+      // 기록 업데이트
+      lastHostedRotationByTeam[chosen.id] = rotationIndex;
+      hostingCountByTeam[chosen.id] = (hostingCountByTeam[chosen.id] || 0) + 1;
+
+      if (n === tournamentNumber) {
+        result = {
+          tournamentNumber: n,
+          rotationNumber: rotationIndex,
+          continent,
+          hostTeam: chosen,
+          hostCountryHostingCount: hostingCountByTeam[chosen.id]
+        };
+      }
+    }
+
+    return result;
+  }
+
+  function renderHostResult(data) {
+    const resultBox = document.getElementById("hostResult");
+    if (!data) {
+      resultBox.innerHTML = '<div class="placeholder">결과를 계산할 수 없습니다.</div>';
+      return;
+    }
+
+    const code = data.hostTeam.id;
+    const flag = data.hostTeam.flag;
+    const name = data.hostTeam.name;
+
+    resultBox.innerHTML = `
+      <div class="host-wrapper">
+        <div class="host-flag-ring">
+          <img class="host-flag"
+               src="${flag}"
+               alt="${name} 국기"
+               onerror="this.style.visibility='hidden';">
+        </div>
+        <div>
+          <div class="host-name">${name}</div>
+          <div class="host-meta">
+            회차: ${data.tournamentNumber}회 ·
+            순회: ${data.rotationNumber}순회 ·
+            대륙: ${continentKor[data.continent]}
+          </div>
+          <div class="host-meta">
+            이 나라는 이 시뮬레이터 기준으로
+            <b>${data.hostCountryHostingCount}</b>번째 월드컵을 개최합니다.
+          </div>
+          <div class="badge">HOST NATION</div>
+        </div>
+      </div>
+    `;
+	
+	// ============================
+	// ★ 개최국 → 본선 슬롯 초기화
+	// ============================
+	const confedMap = {
+	  "EUROPE": "UEFA",
+	  "ASIA": "AFC",
+	  "AFRICA": "CAF",
+	  "NORTH_AMERICA": "CONCACAF",
+	  "SOUTH_AMERICA": "CONMEBOL"
+	};
+
+	// data.hostTeam = { id, name, continent, flag }
+	const hostTeam = {
+	  code: data.hostTeam.id,
+	  name: data.hostTeam.name,
+	  confed: confedMap[data.continent],
+	  flagUrl: data.hostTeam.flag,
+	  isHost: true
+	};
+
+	// 본선 슬롯을 개최국 1팀으로 초기화
+	localStorage.setItem("wc_slots", JSON.stringify([hostTeam]));
+
+	// hostTeam도 따로 저장 (worldcup.html에서 필요)
+	localStorage.setItem("hostTeam", JSON.stringify(hostTeam));
+
+	console.log("개최국 저장 완료:", hostTeam);
+  }
+
+  function loadHost() {
+    const errorBox = document.getElementById("errorBox");
+    const resultBox = document.getElementById("hostResult");
+    errorBox.style.display = "none";
+
+    const num = parseInt(document.getElementById("tournamentNumber").value, 10);
+    if (isNaN(num) || num < 1) {
+      errorBox.textContent = "회차는 1 이상의 숫자여야 합니다.";
+      errorBox.style.display = "block";
+      return;
+    }
+
+    try {
+      const data = computeHostForTournament(num);
+      renderHostResult(data);
+    } catch (e) {
+      console.error(e);
+      errorBox.textContent = "개최국 계산 중 오류 발생";
+      errorBox.style.display = "block";
+      resultBox.innerHTML = '<div class="placeholder">오류가 발생했습니다.</div>';
+    }
+  }
+
+  function resetAll() {
+    const errorBox = document.getElementById("errorBox");
+    const resultBox = document.getElementById("hostResult");
+    errorBox.style.display = "none";
+    document.getElementById("tournamentNumber").value = 1;
+    resultBox.innerHTML = '<div class="placeholder">회차를 입력하면 결과가 표시됩니다.</div>';
+  }
+
+  document.getElementById("loadBtn").addEventListener("click", loadHost);
+  document.getElementById("resetBtn").addEventListener("click", resetAll);
+
+  window.addEventListener("DOMContentLoaded", () => {
+    // 페이지 처음 들어왔을 때 1회차 기준으로 한 번 뽑아놓고 싶으면 아래 주석 해제
+    // loadHost();
+  });
+</script>
+</body>
+</html>
